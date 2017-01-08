@@ -1,8 +1,9 @@
-package com.terrasport.terrasport;
+package com.terrasport.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.terrasport.R;
+import com.terrasport.model.Utilisateur;
+
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,7 +201,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
@@ -309,8 +318,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
+                // final String url = "http://192.168.1.24:8080/utilisateur/?login=" + mEmail + "&password=" + mPassword;
+                final String url = "http://192.168.1.24:8080/utilisateur/?id=3";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                Utilisateur utilisateur = restTemplate.getForObject( url, Utilisateur.class);
                 // Simulate network access.
                 Thread.sleep(2000);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("nom", utilisateur.getNom());
+                bundle.putString("prenom", utilisateur.getPrenom());
+
+                // bundle.putString("nom", utilisateur.get(0).getNom());
+                // bundle.putString("prenom", utilisateur.get(0).getPrenom());
+
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                intent.putExtra("utilisateur", new Gson().toJson(utilisateur));
+
+                startActivity(intent);
+
             } catch (InterruptedException e) {
                 return false;
             }
