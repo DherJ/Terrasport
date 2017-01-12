@@ -10,6 +10,7 @@
     <string name="utilisateur_prenom">Prenom</string>
     <string name="utilisateur_age">Age</string>
     <string name="utilisateur_sexe">Sexe</string>
+    <string name="utilisateur_select_sexe">Sélectionnez un sexe</string>
     <string name="utilisateur_mail">Email</string>
 
     <string name="prompt_email">Login</string>
@@ -23,4 +24,12 @@
     </string>
     <string name="action_creer_compte">Créer un compte</string>
     <string name="title_activity_register">Register</string>
+    <string name="prompt_age">Age</string>
+
+    <string-array name="sexe_array">
+        <item>Homme</item>
+        <item>Femme</item>
+        <item>Autre</item>
+    </string-array>
+
 </resources>

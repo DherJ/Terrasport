@@ -18,12 +18,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -32,9 +31,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.terrasport.R;
 import com.terrasport.model.Utilisateur;
 
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -54,11 +53,17 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private Utilisateur utilisateur;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private ToggleButton toggleButton;
+
+    private EditText nomView;
+    private EditText prenomView;
+    private EditText mailView;
+    private EditText loginView;
+    private EditText ageView;
+    private EditText passwordView;
+    private EditText passwordValidationView;
+    private Spinner selectSexe;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -71,11 +76,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         utilisateur = new Utilisateur();
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.input_email);
-
-        mPasswordView = (EditText) findViewById(R.id.input_password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        nomView = (EditText) findViewById(R.id.input_nom);
+        prenomView = (EditText) findViewById(R.id.input_prenom);
+        mailView = (EditText) findViewById(R.id.input_email);
+        ageView = (EditText) findViewById(R.id.input_age);
+        loginView = (EditText) findViewById(R.id.input_login);
+        passwordView = (EditText) findViewById(R.id.input_password);
+        passwordValidationView = (EditText) findViewById(R.id.input_password_repeat);
+        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -86,16 +94,20 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        toggleButton = (ToggleButton) findViewById(R.id.input_sexe);
-        toggleButton.setOnClickListener(new OnClickListener() {
+        selectSexe = (Spinner) findViewById(R.id.utilisateur_select_sexe);
+        selectSexe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                utilisateur.setSexe(toggleButton.getText().toString());
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                utilisateur.setSexe(selectSexe.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.register_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -120,34 +132,62 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        nomView.setError(null);
+        prenomView.setError(null);
+        mailView.setError(null);
+        ageView.setError(null);
+        loginView.setError(null);
+        passwordView.setError(null);
+        passwordValidationView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String nom = nomView.getText().toString();
+        String prenom = prenomView.getText().toString();
+        String mail = mailView.getText().toString();
+        String age = ageView.getText().toString();
+        String login = loginView.getText().toString();
+        String password = passwordView.getText().toString();
+        String passwordValidation = passwordValidationView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        if ( !TextUtils.isEmpty(password) && !isPasswordValid(password) ) {
+            passwordView.setError(getString(R.string.error_invalid_password));
+            focusView = passwordView;
             cancel = true;
         }
-
+        if ( !TextUtils.isEmpty(password) && isPasswordValid(password) && isPasswordValidationValid(password, passwordValidation) ) {
+            passwordValidationView.setError(getString(R.string.error_invalid_password));
+            focusView = passwordValidationView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(nom)) {
+            nomView.setError(getString(R.string.error_field_required));
+            focusView = loginView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(prenom)) {
+            prenomView.setError(getString(R.string.error_field_required));
+            focusView = loginView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(age)) {
+            ageView.setError(getString(R.string.error_field_required));
+            focusView = loginView;
+            cancel = true;
+        }
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+        if (TextUtils.isEmpty(login)) {
+            loginView.setError(getString(R.string.error_field_required));
+            focusView = loginView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isEmailValid(login)) {
+            loginView.setError(getString(R.string.error_invalid_email));
+            focusView = loginView;
             cancel = true;
         }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -156,19 +196,30 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(email, password);
+
+            utilisateur.setNom(nomView.getText().toString());
+            utilisateur.setPrenom(prenomView.getText().toString());
+            utilisateur.setEmail(mailView.getText().toString());
+            utilisateur.setSexe(selectSexe.getSelectedItem().toString());
+            utilisateur.setAge(Integer.parseInt(ageView.getText().toString()));
+            utilisateur.setLogin(login);
+            utilisateur.setPassword(password);
+
+            mAuthTask = new UserRegisterTask(utilisateur);
             mAuthTask.execute((String) null);
         }
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    private boolean isPasswordValidationValid(String password, String passwordValidation) {
+        return password.equals(passwordValidation);
     }
 
     /**
@@ -232,22 +283,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
-        addEmailsToAutoComplete(emails);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(RegisterActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
     }
 
     /**
@@ -301,42 +341,51 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserRegisterTask extends AsyncTask<String, Void, String> {
+    public class UserRegisterTask extends AsyncTask<Object, Object, ResponseEntity<ResponseEntity>> {
 
-        private final String mEmail;
-        private final String mPassword;
+        private Utilisateur utilisateur;
 
-        UserRegisterTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        UserRegisterTask(Utilisateur pUtilisateur) {
+            utilisateur = pUtilisateur;
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected ResponseEntity<ResponseEntity> doInBackground(Object... params) {
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-
-                RestTemplate restTemplate = new RestTemplate();
-
-                HttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
-                HttpMessageConverter stringHttpMessageConverternew = new StringHttpMessageConverter();
-
-                restTemplate.getMessageConverters().add(formHttpMessageConverter);
-                restTemplate.getMessageConverters().add(stringHttpMessageConverternew);
+/*
+                Utilisateur utilisateur = new Utilisateur();
+                utilisateur.setNom(nom);
+                utilisateur.setPrenom(prenom);
+                utilisateur.setEmail(mail);
+                utilisateur.setAge(age);
+                utilisateur.setLogin(login);
+                utilisateur.setPassword(password);
 
                 MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-                map.add("first_name", "Stancho");
-                map.add("last_name", "Stanchev");
+                map.add("nom", nom);
+                map.add("prenom", prenom);
+                map.add("age", age + "");
+                map.add("email", mail);
+                map.add("login", login);
+                map.add("password", password);
+*/
+
+                String uri = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
+                RestTemplate rt = new RestTemplate();
+
+                rt.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+                rt.getMessageConverters().add(new StringHttpMessageConverter());
 
                 Thread.sleep(2000);
 
-                return
-                        restTemplate.postForObject(params[0], map, String.class);
+                return rt.postForEntity(uri, utilisateur, ResponseEntity.class);
 
             } catch (InterruptedException e) {
-                return e.toString();
+                e.printStackTrace();
+                return null;
             }
         }
 
@@ -347,4 +396,3 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 }
-
