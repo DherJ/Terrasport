@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">Terrasport</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Login</string>
-    <string name="prompt_password">Mot de pass</string>
+    <string name="action_valider">Valider</string>
+    <string name="action_annuler">Annuler</string>
     <string name="action_sign_in">Se connecter</string>
     <string name="action_sign_in_short">Créer un compte</string>
+
+    <string name="utilisateur_nom">Nom</string>
+    <string name="utilisateur_prenom">Prenom</string>
+    <string name="utilisateur_age">Age</string>
+    <string name="utilisateur_sexe">Sexe</string>
+    <string name="utilisateur_mail">Email</string>
+
+    <string name="prompt_email">Login</string>
+    <string name="prompt_password">Mot de passe</string>
     <string name="error_invalid_email">L\'adresse email n\'est pas valide</string>
     <string name="error_invalid_password">Le mot de passe est trop court</string>
     <string name="error_incorrect_password">Le mot de pass est incorrect</string>
@@ -14,4 +22,5 @@
         completions."
     </string>
     <string name="action_creer_compte">Créer un compte</string>
+    <string name="title_activity_register">Register</string>
 </resources>
