@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +100,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               switchRegisterActivity();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
+
+    private void switchRegisterActivity() {
+        Intent intent = new Intent(getBaseContext(), RegisterActivity.class);
+        startActivity(intent);
+    }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -319,7 +334,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 // final String url = "http://192.168.1.24:8080/utilisateur/?login=" + mEmail + "&password=" + mPassword;
-                final String url = "http://192.168.1.24:8080/utilisateur/?id=3";
+                final String url = "http://192.168.1.24:8080/utilisateur/3";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Utilisateur utilisateur = restTemplate.getForObject( url, Utilisateur.class);
@@ -330,9 +345,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 bundle.putString("nom", utilisateur.getNom());
                 bundle.putString("prenom", utilisateur.getPrenom());
-
-                // bundle.putString("nom", utilisateur.get(0).getNom());
-                // bundle.putString("prenom", utilisateur.get(0).getPrenom());
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("utilisateur", new Gson().toJson(utilisateur));

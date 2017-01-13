@@ -13,8 +13,8 @@
 
     <!-- Login progress -->
     <ImageView
-        android:layout_width="260dp"
-        android:layout_height="206dp"
+        android:layout_width="196dp"
+        android:layout_height="139dp"
         app:srcCompat="@drawable/logo_accueil"
         android:id="@+id/imageView" />
 
@@ -84,9 +84,10 @@
                 android:text="@string/action_creer_compte"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button"
+                android:id="@+id/register_button"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:background="@android:color/holo_orange_dark" />
+                android:background="@color/colorSecondary"
+                android:layout_marginTop="20dp" />
 
         </LinearLayout>
     </ScrollView>
