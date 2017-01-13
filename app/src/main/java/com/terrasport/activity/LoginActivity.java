@@ -37,7 +37,9 @@ import com.terrasport.model.Utilisateur;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -334,7 +336,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 // final String url = "http://192.168.1.24:8080/utilisateur/?login=" + mEmail + "&password=" + mPassword;
-                final String url = "http://192.168.1.24:8080/utilisateur/3";
+                // url avec mon IP
+                //final String url = "http://192.168.1.24:8080/utilisateur/3";
+                // url avec IP de lille1
+                final String url = "http://172.19.137.107:8080/utilisateur/3";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Utilisateur utilisateur = restTemplate.getForObject( url, Utilisateur.class);
