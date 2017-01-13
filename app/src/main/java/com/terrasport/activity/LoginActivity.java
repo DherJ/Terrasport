@@ -334,7 +334,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 // final String url = "http://192.168.1.24:8080/utilisateur/?login=" + mEmail + "&password=" + mPassword;
-                final String url = "http://192.168.1.24:8080/utilisateur/3";
+                final String url = "http://172.19.145.162:8080/utilisateur/3";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Utilisateur utilisateur = restTemplate.getForObject( url, Utilisateur.class);
