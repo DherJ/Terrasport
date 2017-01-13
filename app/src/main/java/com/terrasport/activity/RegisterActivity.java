@@ -33,6 +33,7 @@ import com.terrasport.model.Utilisateur;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -152,40 +153,50 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if ( !TextUtils.isEmpty(password) && !isPasswordValid(password) ) {
+        if (TextUtils.isEmpty(nom)) {
+            nomView.setError(getString(R.string.error_field_required));
+            focusView = nomView;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(prenom)) {
+            prenomView.setError(getString(R.string.error_field_required));
+            focusView = prenomView;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(age)) {
+            ageView.setError(getString(R.string.error_field_required));
+            focusView = ageView;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(mail)) {
+            mailView.setError(getString(R.string.error_field_required));
+            focusView = mailView;
+            cancel = true;
+        } // Check for a valid email address.
+          else  if (!isEmailValid(mail)) {
+            mailView.setError(getString(R.string.error_invalid_email));
+            focusView = mailView;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(login)) {
+            loginView.setError(getString(R.string.error_field_required));
+            focusView = loginView;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(password)) {
+            passwordView.setError(getString(R.string.error_field_required));
+            focusView = passwordView;
+            cancel = true;
+        } else
+           // Check for a valid password, if the user entered one.
+           if ( !TextUtils.isEmpty(password) && !isPasswordValid(password) ) {
             passwordView.setError(getString(R.string.error_invalid_password));
             focusView = passwordView;
             cancel = true;
         }
-        if ( !TextUtils.isEmpty(password) && isPasswordValid(password) && isPasswordValidationValid(password, passwordValidation) ) {
+        else if ( !TextUtils.isEmpty(password) && isPasswordValid(password) && !isPasswordValidationValid(password, passwordValidation) ) {
             passwordValidationView.setError(getString(R.string.error_invalid_password));
             focusView = passwordValidationView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(nom)) {
-            nomView.setError(getString(R.string.error_field_required));
-            focusView = loginView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(prenom)) {
-            prenomView.setError(getString(R.string.error_field_required));
-            focusView = loginView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(age)) {
-            ageView.setError(getString(R.string.error_field_required));
-            focusView = loginView;
-            cancel = true;
-        }
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(login)) {
-            loginView.setError(getString(R.string.error_field_required));
-            focusView = loginView;
-            cancel = true;
-        } else if (!isEmailValid(login)) {
-            loginView.setError(getString(R.string.error_invalid_email));
-            focusView = loginView;
             cancel = true;
         }
         if (cancel) {
@@ -372,16 +383,25 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 map.add("password", password);
 */
 
-                String uri = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
+                String uriHomeJerome = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
+                // String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
+
+                // String uriHomeJulien = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
+                // String uriFacJulien = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
+
                 RestTemplate rt = new RestTemplate();
 
-                rt.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+                rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
                 rt.getMessageConverters().add(new StringHttpMessageConverter());
 
                 Thread.sleep(2000);
 
-                return rt.postForEntity(uri, utilisateur, ResponseEntity.class);
+                return rt.postForEntity(uriHomeJerome, utilisateur, ResponseEntity.class);
+                //return rt.postForEntity(uriFacJerome, utilisateur, ResponseEntity.class);
+
+                //return rt.postForEntity(uriHomeJulien, utilisateur, ResponseEntity.class);
+                //return rt.postForEntity(uriFacJulien, utilisateur, ResponseEntity.class);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
