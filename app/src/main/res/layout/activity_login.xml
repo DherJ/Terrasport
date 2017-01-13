@@ -13,9 +13,9 @@
 
     <!-- Login progress -->
     <ImageView
-        android:layout_width="196dp"
-        android:layout_height="139dp"
-        app:srcCompat="@drawable/logo_accueil"
+        android:layout_width="match_parent"
+        android:layout_height="232dp"
+        app:srcCompat="@drawable/logo_appbar"
         android:id="@+id/imageView" />
 
     <ProgressBar
@@ -39,7 +39,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/common_google_signin_btn_text_dark_default">
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
@@ -48,13 +49,16 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="?attr/colorBackgroundFloating"
+                    android:textColorHint="@color/common_google_signin_btn_text_dark_default"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/common_google_signin_btn_text_dark_default">
 
                 <EditText
                     android:id="@+id/password"
@@ -66,7 +70,8 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="?attr/colorBackgroundFloating"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -78,7 +83,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold"
-                android:background="@color/colorPrimary" />
+                android:background="#8cc24a" />
 
             <Button
                 android:text="@string/action_creer_compte"
@@ -86,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/register_button"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:background="@color/colorSecondary"
+                android:background="#ffb938"
                 android:layout_marginTop="20dp" />
 
         </LinearLayout>
