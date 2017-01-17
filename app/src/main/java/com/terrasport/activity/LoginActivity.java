@@ -3,22 +3,20 @@ package com.terrasport.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,9 +35,6 @@ import com.terrasport.model.Utilisateur;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.InetAddress;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -338,10 +333,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // url avec mon IP
                 //final String url = "http://192.168.1.24:8080/utilisateur/3";
                 // url avec IP de lille1
-                final String url = "http://172.19.137.107:8080/utilisateur/3";
+                final String uriHomeJerome = "http://192.168.1.24:8080/utilisateur/3";
+                // String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
+
+                // String uriHomeJulien = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
+                // String uriFacJulien = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Utilisateur utilisateur = restTemplate.getForObject( url, Utilisateur.class);
+                Utilisateur utilisateur = restTemplate.getForObject( uriHomeJerome, Utilisateur.class);
+
+
                 // Simulate network access.
                 Thread.sleep(2000);
 

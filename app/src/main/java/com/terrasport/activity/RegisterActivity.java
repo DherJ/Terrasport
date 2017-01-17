@@ -34,9 +34,6 @@ import com.terrasport.model.Utilisateur;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -365,23 +362,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // TODO: attempt authentication against a network service.
 
             try {
-/*
-                Utilisateur utilisateur = new Utilisateur();
-                utilisateur.setNom(nom);
-                utilisateur.setPrenom(prenom);
-                utilisateur.setEmail(mail);
-                utilisateur.setAge(age);
-                utilisateur.setLogin(login);
-                utilisateur.setPassword(password);
-
-                MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-                map.add("nom", nom);
-                map.add("prenom", prenom);
-                map.add("age", age + "");
-                map.add("email", mail);
-                map.add("login", login);
-                map.add("password", password);
-*/
 
                 String uriHomeJerome = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
                 // String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
