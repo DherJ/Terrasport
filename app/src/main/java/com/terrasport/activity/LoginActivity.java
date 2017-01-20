@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.terrasport.R;
+import com.terrasport.event.AllParticipationEvent;
 import com.terrasport.model.Utilisateur;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -333,7 +334,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // url avec mon IP
                 //final String url = "http://192.168.1.24:8080/utilisateur/3";
                 // url avec IP de lille1
-                //final String uriHomeJerome = "http://192.168.1.24:8080/utilisateur/3";
+               // final String uriHomeJerome = "http://192.168.1.24:8080/utilisateur/3";
                  String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/3");
 
                 // String uriHomeJulien = new String("http://192.168.1.24:8080/utilisateur/3");
@@ -353,6 +354,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("utilisateur", new Gson().toJson(utilisateur));
+
+                // url avec IP de lille1
+                //final String uriHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
+                String uriDasboardFacJerome = new String("http://172.19.137.107:8080/dashboard/participations/3");
+
+                // String uriHomeJulien = new String("http://192.168.1.24:8080/dashboard/participations/3");
+                // String uriFacJulien = new String("http://172.19.137.107:8080/dashboard/participations/3");
+
+                AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriDasboardFacJerome, AllParticipationEvent.class);
+
+                Thread.sleep(2000);
+
+                intent.putExtra("dashboard", new Gson().toJson(allParticipationEvent));
 
                 startActivity(intent);
 

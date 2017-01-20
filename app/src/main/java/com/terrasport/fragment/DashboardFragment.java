@@ -1,6 +1,8 @@
 package com.terrasport.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,9 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.terrasport.R;
+import com.terrasport.event.AllParticipationEvent;
 import com.terrasport.fragment.dummy.DummyContent;
-import com.terrasport.fragment.dummy.DummyContent.DummyItem;
+import com.terrasport.model.Participation;
+import com.terrasport.model.Utilisateur;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -24,9 +41,15 @@ public class DashboardFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ALL_PARTICIPATIONS_EVENT = "all-participations-event";
+
     // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private int mColumnCount = 0;
     private OnListFragmentInteractionListener mListener;
+    private final String uriHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
+    private List<Participation> participations;
+    private View view;
+    private RecyclerView.Adapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -35,23 +58,32 @@ public class DashboardFragment extends Fragment {
     public DashboardFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static DashboardFragment newInstance(int columnCount) {
+    public static DashboardFragment newInstance(AllParticipationEvent allParticipationsEvent) {
         DashboardFragment fragment = new DashboardFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putSerializable(ALL_PARTICIPATIONS_EVENT, allParticipationsEvent);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate  (savedInstanceState);
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            AllParticipationEvent test = (AllParticipationEvent) getArguments().get(ALL_PARTICIPATIONS_EVENT);
+            participations = test.getParticipations();
         }
+
+       // RestTemplate restTemplate = new RestTemplate();
+        //restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+       // participations = (List<Participation>) restTemplate.getForObject( uriHomeJerome, ArrayList<Participation.class>);
+
+        //Participation[] forNow = restTemplate.getForObject(uriHomeJerome, Participation[].class);
+       // participations =  Arrays.asList(forNow);
+       // bindRecyclerView();
+
     }
 
     @Override
@@ -68,7 +100,13 @@ public class DashboardFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DashboardRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            if(participations == null) {
+                participations = new ArrayList<Participation>();
+            }
+
+            adapter = new DashboardRecyclerViewAdapter(this.participations, mListener);
+
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
@@ -103,6 +141,59 @@ public class DashboardFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Participation item);
+    }
+
+    public void bindRecyclerView() {
+        new MyAsyncTask(getActivity(), (RecyclerView) view, adapter).execute("");
+    }
+
+    class MyAsyncTask extends AsyncTask<String, String, List<Participation>> {
+        RecyclerView mRecyclerView;
+        Activity mContex;
+        RecyclerView.Adapter adapter;
+
+        public MyAsyncTask(Activity context, RecyclerView rview, RecyclerView.Adapter mAdapter) {
+            this.mRecyclerView = rview;
+            this.mContex = context;
+            adapter = mAdapter;
+        }
+
+        protected List<Participation> doInBackground(String... params) {
+
+            // url avec IP de lille1
+            //final String uriHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
+             String uriFacJerome = new String("http://172.19.137.107:8080/dashboard/participations/3");
+
+            // String uriHomeJulien = new String("http://192.168.1.24:8080/dashboard/participations/3");
+            // String uriFacJulien = new String("http://172.19.137.107:8080/dashboard/participations/3");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            //ResponseEntity<Participation[]> responseEntity = restTemplate.getForEntity(uriHomeJerome, Participation[].class);
+
+            /*
+            Collection<Participation> readValues;
+
+            try {
+                readValues = new ObjectMapper().readValue(new Gson().toJson(restTemplate.getForEntity(uriFacJerome, Participation[].class)), new TypeReference<Collection<Participation>>() { });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<Participation> participations = new ArrayList<>();
+            //List<Participation> participations = Arrays.asList(responseEntity.getBody());
+            for(int i = 0; i < participations.size(); i++) {
+                mListener.onListFragmentInteraction(participations.get(i));
+            }
+            */
+            AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriFacJerome, AllParticipationEvent.class);
+            return allParticipationEvent.getParticipations();
+        }
+
+        @Override
+        protected void onPostExecute(List<Participation> mParticipations) {
+            // super.onPostExecute(mParticipations);
+            // participations = mParticipations;
+            // adapter.notifyDataSetChanged();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.terrasport.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,9 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.terrasport.R;
+import com.terrasport.event.AllEvenementEvent;
+import com.terrasport.event.AllParticipationEvent;
 import com.terrasport.fragment.DashboardFragment;
 import com.terrasport.fragment.dummy.DummyContent;
+import com.terrasport.model.Participation;
+
+import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DashboardFragment.OnListFragmentInteractionListener {
 
@@ -23,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         private NavigationView navigationView;
         private DrawerLayout drawerLayout;
         private Fragment fragment;
+        private AllParticipationEvent participationsEvent;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +62,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
+            String jsonObject = null;
+            Bundle extras = getIntent().getExtras();
+            if(extras != null) {
+                jsonObject = extras.getString("dashboard");
+            }
+
+            participationsEvent = new Gson().fromJson(jsonObject, AllParticipationEvent.class);
+
             try {
-                fragment = new DashboardFragment();
+                fragment = DashboardFragment.newInstance(participationsEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -120,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Participation item) {
 
     }
 }

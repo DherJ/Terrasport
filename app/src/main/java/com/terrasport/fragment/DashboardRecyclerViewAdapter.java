@@ -7,21 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.terrasport.R;
-import com.terrasport.fragment.dummy.DummyContent.DummyItem;
+import com.terrasport.model.Participation;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Participation} and makes a call to the
  * specified {@link DashboardFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<DashboardRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Participation> mValues;
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
 
-    public DashboardRecyclerViewAdapter(List<DummyItem> items, DashboardFragment.OnListFragmentInteractionListener listener) {
+    public DashboardRecyclerViewAdapter(List<Participation> items, DashboardFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,8 +36,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getId().toString());
+        holder.mContentView.setText(mValues.get(position).getDate().toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +60,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Participation mItem;
 
         public ViewHolder(View view) {
             super(view);

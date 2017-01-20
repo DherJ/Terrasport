@@ -1,8 +1,9 @@
 package com.terrasport.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Participation {
+public class Participation implements Serializable {
 
 	private Integer id;
 	private Utilisateur utilisateur;
