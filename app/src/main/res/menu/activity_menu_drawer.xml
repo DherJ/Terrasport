@@ -5,27 +5,27 @@
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dasboard"
-            android:title="@string/dashboard" />
+            android:title="@string/dashboard"/>
         <item
             android:id="@+id/nav_evenement"
             android:icon="@drawable/ic_map"
-            android:title="@string/evenements" />
+            android:title="@string/evenements"/>
         <item
             android:id="@+id/nav_mes_evenements"
             android:icon="@drawable/ic_map"
-            android:title="@string/mes_evenements" />
+            android:title="@string/mes_evenements"/>
         <item
             android:id="@+id/nav_participation"
             android:icon="@drawable/ic_personne"
-            android:title="@string/participations" />
+            android:title="@string/participations"/>
         <item
             android:id="@+id/nav_demandes_participation"
             android:icon="@drawable/ic_personne"
-            android:title="@string/demandes_de_participation" />
+            android:title="@string/demandes_de_participation"/>
         <item
             android:id="@+id/nav_map_terrains"
             android:icon="@drawable/ic_map"
-            android:title="@string/les_terrains" />
+            android:title="@string/les_terrains"/>
     </group>
 
     <!--<item android:title="Communicate">

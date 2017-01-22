@@ -334,14 +334,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // url avec mon IP
                 //final String url = "http://192.168.1.24:8080/utilisateur/3";
                 // url avec IP de lille1
-               // final String uriHomeJerome = "http://192.168.1.24:8080/utilisateur/3";
-                 String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/3");
+                final String uriHomeJerome = "http://192.168.1.24:8080/utilisateur/3";
+                // String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/3");
 
                 // String uriHomeJulien = new String("http://192.168.1.24:8080/utilisateur/3");
                 // String uriFacJulien = new String("http://172.19.137.107:8080/utilisateur/3");
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Utilisateur utilisateur = restTemplate.getForObject( uriFacJerome, Utilisateur.class);
+                Utilisateur utilisateur = restTemplate.getForObject( uriHomeJerome, Utilisateur.class);
 
 
                 // Simulate network access.
@@ -356,13 +356,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 intent.putExtra("utilisateur", new Gson().toJson(utilisateur));
 
                 // url avec IP de lille1
-                //final String uriHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
-                String uriDasboardFacJerome = new String("http://172.19.137.107:8080/dashboard/participations/3");
+                final String uriDashboardHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
+                //String uriDasboardFacJerome = new String("http://172.19.137.107:8080/dashboard/participations/3");
 
                 // String uriHomeJulien = new String("http://192.168.1.24:8080/dashboard/participations/3");
                 // String uriFacJulien = new String("http://172.19.137.107:8080/dashboard/participations/3");
 
-                AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriDasboardFacJerome, AllParticipationEvent.class);
+                AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriDashboardHomeJerome, AllParticipationEvent.class);
 
                 Thread.sleep(2000);
 

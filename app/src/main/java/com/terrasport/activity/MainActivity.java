@@ -1,6 +1,5 @@
 package com.terrasport.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,24 +15,22 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.terrasport.R;
-import com.terrasport.event.AllEvenementEvent;
 import com.terrasport.event.AllParticipationEvent;
-import com.terrasport.fragment.DashboardFragment;
-import com.terrasport.fragment.dummy.DummyContent;
+import com.terrasport.fragment.EvenementFragment;
+import com.terrasport.fragment.ParticipationAVenirFragment;
+import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
 
-import java.io.Serializable;
-
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DashboardFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener {
 
         private Toolbar toolbar;
         private NavigationView navigationView;
-        private DrawerLayout drawerLayout;
         private Fragment fragment;
         private AllParticipationEvent participationsEvent;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
+            DrawerLayout drawerLayout;
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             participationsEvent = new Gson().fromJson(jsonObject, AllParticipationEvent.class);
 
             try {
-                fragment = DashboardFragment.newInstance(participationsEvent);
+                fragment = ParticipationAVenirFragment.newInstance(participationsEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -115,11 +112,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @SuppressWarnings("StatementWithEmptyBody")
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
+            Fragment fragment = null;
+            Class fragmentClass = null;
+
             // Handle navigation view item clicks here.
             int id = item.getItemId();
 
             if (id == R.id.nav_evenement) {
                 // Handle the camera action
+                fragmentClass = EvenementFragment.class;
             } else if (id == R.id.nav_mes_evenements) {
 
             } else if (id == R.id.nav_participation) {
@@ -130,6 +131,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
 
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_menu, fragment).commit();
+
+            item.setChecked(true);
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return true;
@@ -137,6 +148,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onListFragmentInteraction(Participation item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Evenement item) {
 
     }
 }

@@ -13,15 +13,15 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Participation} and makes a call to the
- * specified {@link DashboardFragment.OnListFragmentInteractionListener}.
+ * specified {@link ParticipationAVenirFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<DashboardRecyclerViewAdapter.ViewHolder> {
+public class ParticipationAVenirRecyclerViewAdapter extends RecyclerView.Adapter<ParticipationAVenirRecyclerViewAdapter.ViewHolder> {
 
     private final List<Participation> mValues;
-    private final DashboardFragment.OnListFragmentInteractionListener mListener;
+    private final ParticipationAVenirFragment.OnListFragmentInteractionListener mListener;
 
-    public DashboardRecyclerViewAdapter(List<Participation> items, DashboardFragment.OnListFragmentInteractionListener listener) {
+    public ParticipationAVenirRecyclerViewAdapter(List<Participation> items, ParticipationAVenirFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -29,7 +29,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_dashboard, parent, false);
+                .inflate(R.layout.fragment_participation_a_venir, parent, false);
         return new ViewHolder(view);
     }
 

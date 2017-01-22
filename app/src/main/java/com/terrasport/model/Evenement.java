@@ -1,5 +1,6 @@
 package com.terrasport.model;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Evenement {
@@ -8,6 +9,7 @@ public class Evenement {
 	private boolean prive;
 	private Integer nbPlaces;
 	private Integer nbPlacesRestantes;
+	private Timestamp date;
 	private Terrain terrain;
 	private Sport sport;
 	private Niveau niveauCible;
@@ -38,6 +40,12 @@ public class Evenement {
 	}
 	public void setNbPlacesRestantes(Integer nbPlacesRestantes) {
 		this.nbPlacesRestantes = nbPlacesRestantes;
+	}
+	public Timestamp getDate() {
+		return date;
+	}
+	public void setDate(Timestamp date) {
+		this.date = date;
 	}
 	public Terrain getTerrain() {
 		return terrain;

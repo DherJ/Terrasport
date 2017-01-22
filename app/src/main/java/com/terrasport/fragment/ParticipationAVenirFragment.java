@@ -2,6 +2,7 @@ package com.terrasport.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,23 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.event.AllParticipationEvent;
-import com.terrasport.fragment.dummy.DummyContent;
 import com.terrasport.model.Participation;
-import com.terrasport.model.Utilisateur;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -37,7 +30,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class DashboardFragment extends Fragment {
+public class ParticipationAVenirFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -46,7 +39,7 @@ public class DashboardFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 0;
     private OnListFragmentInteractionListener mListener;
-    private final String uriHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
+    private final String uriHomeJerome = "http://192.168.1.24:8080/participation/all-a-venir/utilisateur/3";
     private List<Participation> participations;
     private View view;
     private RecyclerView.Adapter adapter;
@@ -55,11 +48,11 @@ public class DashboardFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DashboardFragment() {
+    public ParticipationAVenirFragment() {
     }
 
-    public static DashboardFragment newInstance(AllParticipationEvent allParticipationsEvent) {
-        DashboardFragment fragment = new DashboardFragment();
+    public static ParticipationAVenirFragment newInstance(AllParticipationEvent allParticipationsEvent) {
+        ParticipationAVenirFragment fragment = new ParticipationAVenirFragment();
         Bundle args = new Bundle();
         args.putSerializable(ALL_PARTICIPATIONS_EVENT, allParticipationsEvent);
         fragment.setArguments(args);
@@ -69,27 +62,17 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate  (savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            AllParticipationEvent test = (AllParticipationEvent) getArguments().get(ALL_PARTICIPATIONS_EVENT);
-            participations = test.getParticipations();
+            AllParticipationEvent allParticipationsEvent = (AllParticipationEvent) getArguments().get(ALL_PARTICIPATIONS_EVENT);
+            participations = allParticipationsEvent.getParticipations();
         }
-
-       // RestTemplate restTemplate = new RestTemplate();
-        //restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-       // participations = (List<Participation>) restTemplate.getForObject( uriHomeJerome, ArrayList<Participation.class>);
-
-        //Participation[] forNow = restTemplate.getForObject(uriHomeJerome, Participation[].class);
-       // participations =  Arrays.asList(forNow);
-       // bindRecyclerView();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_participation_a_venir_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -104,13 +87,12 @@ public class DashboardFragment extends Fragment {
                 participations = new ArrayList<Participation>();
             }
 
-            adapter = new DashboardRecyclerViewAdapter(this.participations, mListener);
-
+            adapter = new ParticipationAVenirRecyclerViewAdapter(this.participations, mListener);
             recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -162,11 +144,11 @@ public class DashboardFragment extends Fragment {
         protected List<Participation> doInBackground(String... params) {
 
             // url avec IP de lille1
-            //final String uriHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
-             String uriFacJerome = new String("http://172.19.137.107:8080/dashboard/participations/3");
+            final String uriHomeJerome = "http://192.168.1.24:8080/participation/all-a-venir/utilisateur/3";
+             //String uriFacJerome = new String("http://172.19.137.107:8080/participation/all-a-venir/utilisateur/3");
 
-            // String uriHomeJulien = new String("http://192.168.1.24:8080/dashboard/participations/3");
-            // String uriFacJulien = new String("http://172.19.137.107:8080/dashboard/participations/3");
+            // String uriHomeJulien = new String("http://192.168.1.24:8080/participation/all-a-venir/utilisateur/3");
+            // String uriFacJulien = new String("http://172.19.137.107:8080/participation/all-a-venir/utilisateur/3");
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             //ResponseEntity<Participation[]> responseEntity = restTemplate.getForEntity(uriHomeJerome, Participation[].class);
@@ -185,7 +167,7 @@ public class DashboardFragment extends Fragment {
                 mListener.onListFragmentInteraction(participations.get(i));
             }
             */
-            AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriFacJerome, AllParticipationEvent.class);
+            AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriHomeJerome, AllParticipationEvent.class);
             return allParticipationEvent.getParticipations();
         }
 
