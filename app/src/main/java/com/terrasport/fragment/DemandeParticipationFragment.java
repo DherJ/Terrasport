@@ -1,7 +1,6 @@
 package com.terrasport.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,12 +12,13 @@ import android.view.ViewGroup;
 
 import com.terrasport.R;
 import com.terrasport.adapter.ParticipationAVenirRecyclerViewAdapter;
-import com.terrasport.asyncTask.LoadParticipationAVenirAsyncTask;
-import com.terrasport.event.AllParticipationEvent;
-import com.terrasport.model.Participation;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
+import com.terrasport.asyncTask.LoadEvenementUtilisateurAsyncTask;
+import com.terrasport.fragment.dummy.DummyContent;
+import com.terrasport.fragment.dummy.DummyContent.DummyItem;
+import com.terrasport.model.DemandeParticipation;
+import com.terrasport.model.Evenement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,72 +27,65 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ParticipationAVenirFragment extends Fragment {
+public class DemandeParticipationFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String ALL_PARTICIPATIONS_EVENT = "all-participations-event";
-
     // TODO: Customize parameters
-    private int mColumnCount = 0;
-    private OnListFragmentInteractionListener mListener;
-    private List<Participation> participations;
-    // private View view;
-    private RecyclerView.Adapter adapter;
-
+    private int mColumnCount = 1;
+    private DemandeParticipationFragment.OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
-    private LoadParticipationAVenirAsyncTask mTask;
+    private LoadDemandeParticipationAsyncTask mTask;
+    private List<DemandeParticipation> demandesParticipation;
+    public RecyclerView.Adapter adapter;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ParticipationAVenirFragment() {
+    public DemandeParticipationFragment() {
     }
 
-    public static ParticipationAVenirFragment newInstance(AllParticipationEvent allParticipationsEvent) {
-        ParticipationAVenirFragment fragment = new ParticipationAVenirFragment();
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static DemandeParticipationFragment newInstance(int columnCount) {
+        DemandeParticipationFragment fragment = new DemandeParticipationFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ALL_PARTICIPATIONS_EVENT, allParticipationsEvent);
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate  (savedInstanceState);
+        super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            AllParticipationEvent allParticipationsEvent = (AllParticipationEvent) getArguments().get(ALL_PARTICIPATIONS_EVENT);
-            this.participations = allParticipationsEvent.getParticipations();
-            mTask = new LoadParticipationAVenirAsyncTask(this);
-            mTask.execute();
         }
+        mTask = new LoadDemandeParticipationAsyncTask(this);
+        mTask.execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_participation_a_venir_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_demande_participation_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            if(participations == null) {
-                participations = new ArrayList<Participation>();
-            }
-
-            adapter = new ParticipationAVenirRecyclerViewAdapter(this.participations, mListener);
-            recyclerView.setAdapter(adapter);
-            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
+            recyclerView.setAdapter(new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener));
         }
         return view;
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -111,10 +104,10 @@ public class ParticipationAVenirFragment extends Fragment {
         mListener = null;
     }
 
-    public void updateListView(List<Participation> result) {
-        participations = result;
+    public void updateListView(List<DemandeParticipation> result) {
+        demandesParticipation = result;
         adapter.notifyDataSetChanged();
-        adapter = new ParticipationAVenirRecyclerViewAdapter(participations, mListener);
+        adapter = new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -130,6 +123,6 @@ public class ParticipationAVenirFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Participation item);
+        void onListFragmentInteraction(DemandeParticipation item);
     }
 }

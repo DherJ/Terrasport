@@ -7,21 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.terrasport.R;
-import com.terrasport.model.Evenement;
+import com.terrasport.model.DemandeParticipation;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Evenement} and makes a call to the
- * specified {@link EvenementFragment.OnListFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link DemandeParticipation} and makes a call to the
+ * specified {@link DemandeParticipationFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<EvenementRecyclerViewAdapter.ViewHolder> {
+public class DemandeParticipationRecyclerViewAdapter extends RecyclerView.Adapter<DemandeParticipationRecyclerViewAdapter.ViewHolder> {
 
-    private List<Evenement> mValues;
-    private EvenementFragment.OnListFragmentInteractionListener mListener;
+    private final List<DemandeParticipation> mValues;
+    private final DemandeParticipationFragment.OnListFragmentInteractionListener mListener;
 
-    public EvenementRecyclerViewAdapter(List<Evenement> items, EvenementFragment.OnListFragmentInteractionListener listener) {
+    public DemandeParticipationRecyclerViewAdapter(List<DemandeParticipation> items, DemandeParticipationFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -29,7 +29,7 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_evenement, parent, false);
+                .inflate(R.layout.fragment_demande_participation, parent, false);
         return new ViewHolder(view);
     }
 
@@ -37,7 +37,7 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getId().toString());
-        holder.mContentView.setText(mValues.get(position).getNbPlaces().toString());
+        holder.mContentView.setText(mValues.get(position).getDateDemande().toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,19 +56,11 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
         return mValues.size();
     }
 
-    public void clear() {
-        mValues = null;
-    }
-
-    public void addAll(List<Evenement> newData) {
-        mValues = newData;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Evenement mItem;
+        public DemandeParticipation mItem;
 
         public ViewHolder(View view) {
             super(view);

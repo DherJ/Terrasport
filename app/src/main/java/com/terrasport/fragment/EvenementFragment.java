@@ -2,20 +2,17 @@ package com.terrasport.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.terrasport.R;
+import com.terrasport.adapter.EvenementRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadEvenementAsyncTask;
-import com.terrasport.event.AllEvenementEvent;
 import com.terrasport.model.Evenement;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 

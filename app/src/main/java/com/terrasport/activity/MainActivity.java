@@ -16,8 +16,11 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.event.AllParticipationEvent;
+import com.terrasport.fragment.DemandeParticipationFragment;
 import com.terrasport.fragment.EvenementFragment;
+import com.terrasport.fragment.EvenementUtilisateurFragment;
 import com.terrasport.fragment.ParticipationAVenirFragment;
+import com.terrasport.fragment.TerrainFragment;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
 
@@ -119,16 +122,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             int id = item.getItemId();
 
             if (id == R.id.nav_evenement) {
-                // Handle the camera action
                 fragmentClass = EvenementFragment.class;
             } else if (id == R.id.nav_mes_evenements) {
-
+                fragmentClass = EvenementUtilisateurFragment.class;
             } else if (id == R.id.nav_participation) {
-
+                fragmentClass = ParticipationAVenirFragment.class;
             } else if (id == R.id.nav_demandes_participation) {
-
+                fragmentClass = DemandeParticipationFragment.class;
             } else if (id == R.id.nav_map_terrains) {
-
+                fragmentClass = TerrainFragment.class;
             }
 
             try {
