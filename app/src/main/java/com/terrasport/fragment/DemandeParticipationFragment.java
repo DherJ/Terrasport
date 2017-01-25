@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.terrasport.R;
+import com.terrasport.adapter.DemandeParticipationRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
 import com.terrasport.model.DemandeParticipation;
 

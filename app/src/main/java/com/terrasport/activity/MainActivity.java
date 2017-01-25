@@ -21,10 +21,11 @@ import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.fragment.EvenementUtilisateurFragment;
 import com.terrasport.fragment.ParticipationAVenirFragment;
 import com.terrasport.fragment.TerrainFragment;
+import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener, DemandeParticipationFragment.OnListFragmentInteractionListener {
 
         private Toolbar toolbar;
         private NavigationView navigationView;
@@ -155,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onListFragmentInteraction(Evenement item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DemandeParticipation item) {
 
     }
 }
