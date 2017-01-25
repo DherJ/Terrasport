@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.terrasport.R;
 import com.terrasport.asyncTask.LoadEvenementUtilisateurAsyncTask;
-import com.terrasport.asyncTask.LoadParticipationAVenirAsyncTask;
 import com.terrasport.model.Evenement;
 
 import java.util.List;

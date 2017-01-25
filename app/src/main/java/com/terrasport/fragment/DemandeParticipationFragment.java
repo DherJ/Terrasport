@@ -11,13 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.terrasport.R;
-import com.terrasport.adapter.ParticipationAVenirRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
-import com.terrasport.asyncTask.LoadEvenementUtilisateurAsyncTask;
-import com.terrasport.fragment.dummy.DummyContent;
-import com.terrasport.fragment.dummy.DummyContent.DummyItem;
 import com.terrasport.model.DemandeParticipation;
-import com.terrasport.model.Evenement;
 
 import java.util.List;
 

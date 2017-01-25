@@ -3,11 +3,8 @@ package com.terrasport.asyncTask;
 import android.os.AsyncTask;
 
 import com.terrasport.event.AllDemandeParticipationEvent;
-import com.terrasport.event.AllParticipationEvent;
 import com.terrasport.fragment.DemandeParticipationFragment;
-import com.terrasport.fragment.ParticipationAVenirFragment;
 import com.terrasport.model.DemandeParticipation;
-import com.terrasport.model.Participation;
 import com.terrasport.utils.Globals;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

@@ -2,11 +2,8 @@ package com.terrasport.asyncTask;
 
 import android.os.AsyncTask;
 
-import com.terrasport.event.AllDemandeParticipationEvent;
 import com.terrasport.event.AllTerrainEvent;
-import com.terrasport.fragment.DemandeParticipationFragment;
 import com.terrasport.fragment.TerrainFragment;
-import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Terrain;
 import com.terrasport.utils.Globals;
 
