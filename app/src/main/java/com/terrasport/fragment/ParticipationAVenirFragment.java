@@ -113,7 +113,6 @@ public class ParticipationAVenirFragment extends Fragment {
 
     public void updateListView(List<Participation> result) {
         participations = result;
-        adapter.notifyDataSetChanged();
         adapter = new ParticipationAVenirRecyclerViewAdapter(participations, mListener);
         recyclerView.setAdapter(adapter);
     }

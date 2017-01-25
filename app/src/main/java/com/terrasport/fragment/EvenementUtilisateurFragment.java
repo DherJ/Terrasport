@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.terrasport.R;
+import com.terrasport.adapter.EvenementUtilisateurRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadEvenementUtilisateurAsyncTask;
 import com.terrasport.model.Evenement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -59,7 +61,7 @@ public class EvenementUtilisateurFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-
+        this.evenements = new ArrayList<Evenement>();
         mTask = new LoadEvenementUtilisateurAsyncTask(this);
         mTask.execute();
     }
@@ -103,7 +105,6 @@ public class EvenementUtilisateurFragment extends Fragment {
 
     public void updateListView(List<Evenement> result) {
         evenements = result;
-        adapter.notifyDataSetChanged();
         adapter = new EvenementUtilisateurRecyclerViewAdapter(evenements, mListener);
         recyclerView.setAdapter(adapter);
     }

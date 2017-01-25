@@ -12,6 +12,7 @@ import com.terrasport.R;
 import com.terrasport.asyncTask.LoadTerrainAsyncTask;
 import com.terrasport.model.Terrain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +67,7 @@ public class TerrainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        this.terrains = new ArrayList<Terrain>();
         mTask = new LoadTerrainAsyncTask(this);
         mTask.execute();
     }

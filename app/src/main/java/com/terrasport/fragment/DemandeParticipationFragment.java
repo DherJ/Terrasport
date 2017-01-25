@@ -14,7 +14,9 @@ import com.terrasport.R;
 import com.terrasport.adapter.DemandeParticipationRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
 import com.terrasport.model.DemandeParticipation;
+import com.terrasport.model.Evenement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,6 +61,7 @@ public class DemandeParticipationFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        this.demandesParticipation = new ArrayList<DemandeParticipation>();
         mTask = new LoadDemandeParticipationAsyncTask(this);
         mTask.execute();
     }
@@ -71,7 +74,7 @@ public class DemandeParticipationFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -102,7 +105,6 @@ public class DemandeParticipationFragment extends Fragment {
 
     public void updateListView(List<DemandeParticipation> result) {
         demandesParticipation = result;
-        adapter.notifyDataSetChanged();
         adapter = new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener);
         recyclerView.setAdapter(adapter);
     }
