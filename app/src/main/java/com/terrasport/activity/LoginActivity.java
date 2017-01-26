@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.event.AllParticipationEvent;
 import com.terrasport.model.Utilisateur;
+import com.terrasport.utils.Globals;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -45,6 +46,9 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    final String URI_AUTHENTIFICATION = "utilisateur/authentification?";
+    final String URI_PARTICIPATION = "participation/all-a-venir/utilisateur/";
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -327,52 +331,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
-            try {
-                // final String url = "http://192.168.1.24:8080/utilisateur/?login=" + mEmail + "&password=" + mPassword;
-                // url avec mon IP
-                //final String url = "http://192.168.1.24:8080/utilisateur/3";
-                // url avec IP de lille1
-                final String uriHomeJerome = "http://192.168.1.24:8080/utilisateur/3";
-                // String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/3");
+                // final String url = "http://192.168.1.24:8080/utilisateur/authentification?login=" + mEmail + "&password=" + mPassword;
+                String urlAuthentification = Globals.getInstance().getBaseUrl() + URI_AUTHENTIFICATION + "login=" + mEmail + "&password=" + mPassword;
 
-                // String uriHomeJulien = new String("http://192.168.1.24:8080/utilisateur/3");
-                // String uriFacJulien = new String("http://172.19.137.107:8080/utilisateur/3");
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Utilisateur utilisateur = restTemplate.getForObject( uriHomeJerome, Utilisateur.class);
+                Utilisateur utilisateur = restTemplate.getForObject( urlAuthentification, Utilisateur.class);
 
+                if(utilisateur.getId() != null) {
 
-                // Simulate network access.
-                Thread.sleep(2000);
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra("utilisateur", new Gson().toJson(utilisateur));
 
-                Bundle bundle = new Bundle();
+                    // url avec IP de lille1
+                    final String urlParticipationUtilisateur = URI_PARTICIPATION + utilisateur.getId();
 
-                bundle.putString("nom", utilisateur.getNom());
-                bundle.putString("prenom", utilisateur.getPrenom());
+                    AllParticipationEvent allParticipationEvent = restTemplate.getForObject( urlParticipationUtilisateur, AllParticipationEvent.class);
 
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("utilisateur", new Gson().toJson(utilisateur));
+                    intent.putExtra("dashboard", new Gson().toJson(allParticipationEvent));
 
-                // url avec IP de lille1
-                final String uriDashboardHomeJerome = "http://192.168.1.24:8080/dashboard/participations/3";
-                //String uriDasboardFacJerome = new String("http://172.19.137.107:8080/dashboard/participations/3");
+                    startActivity(intent);
+                }
 
-                // String uriHomeJulien = new String("http://192.168.1.24:8080/dashboard/participations/3");
-                // String uriFacJulien = new String("http://172.19.137.107:8080/dashboard/participations/3");
-
-                AllParticipationEvent allParticipationEvent = restTemplate.getForObject( uriDashboardHomeJerome, AllParticipationEvent.class);
-
-                Thread.sleep(2000);
-
-                intent.putExtra("dashboard", new Gson().toJson(allParticipationEvent));
-
-                startActivity(intent);
-
-            } catch (InterruptedException e) {
-                return false;
-            }
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
