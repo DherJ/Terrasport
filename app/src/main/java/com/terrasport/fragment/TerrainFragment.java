@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.terrasport.R;
 import com.terrasport.asyncTask.LoadTerrainAsyncTask;
+import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Terrain;
 
 import java.util.ArrayList;

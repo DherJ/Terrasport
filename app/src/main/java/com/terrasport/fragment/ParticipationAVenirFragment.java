@@ -62,11 +62,9 @@ public class ParticipationAVenirFragment extends Fragment {
         super.onCreate  (savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            AllParticipationEvent allParticipationsEvent = (AllParticipationEvent) getArguments().get(ALL_PARTICIPATIONS_EVENT);
-            this.participations = allParticipationsEvent.getParticipations();
-            mTask = new LoadParticipationAVenirAsyncTask(this);
-            mTask.execute();
         }
+        mTask = new LoadParticipationAVenirAsyncTask(this);
+        mTask.execute();
     }
 
     @Override

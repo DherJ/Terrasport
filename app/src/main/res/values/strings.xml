@@ -37,11 +37,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="evenements">Evènements</string>
-    <string name="participations">Participations</string>
+    <string name="evenements">Liste des Evènements</string>
+    <string name="participations">Mes participations</string>
     <string name="demandes_de_participation">Demandes de participation</string>
     <string name="mes_evenements">Mes évènements</string>
-    <string name="dashboard">Dashboard</string>
     <string name="les_terrains">Les terrains</string>
 
     <!-- TODO: Remove or change this placeholder text -->

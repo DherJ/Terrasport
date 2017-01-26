@@ -1,5 +1,6 @@
 package com.terrasport.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,7 @@ import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener, DemandeParticipationFragment.OnListFragmentInteractionListener, EvenementUtilisateurFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener, DemandeParticipationFragment.OnListFragmentInteractionListener, EvenementUtilisateurFragment.OnListFragmentInteractionListener, TerrainFragment.OnFragmentInteractionListener {
 
         private Toolbar toolbar;
         private NavigationView navigationView;
@@ -161,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onListFragmentInteraction(DemandeParticipation item) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }
