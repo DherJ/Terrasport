@@ -30,6 +30,7 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.terrasport.R;
 import com.terrasport.model.Utilisateur;
+import com.terrasport.utils.Globals;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -44,6 +45,7 @@ import java.util.List;
  */
 public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    private final String URI = Globals.getInstance().getBaseUrl() + "utilisateur/sauvegarder";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -361,32 +363,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         protected ResponseEntity<ResponseEntity> doInBackground(Object... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-
-                String uriHomeJerome = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
-                // String uriFacJerome = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
-
-                // String uriHomeJulien = new String("http://192.168.1.24:8080/utilisateur/sauvegarder");
-                // String uriFacJulien = new String("http://172.19.137.107:8080/utilisateur/sauvegarder");
-
                 RestTemplate rt = new RestTemplate();
 
                 rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
                 rt.getMessageConverters().add(new StringHttpMessageConverter());
 
-                Thread.sleep(2000);
+                return rt.postForEntity(URI, utilisateur, ResponseEntity.class);
 
-                return rt.postForEntity(uriHomeJerome, utilisateur, ResponseEntity.class);
-                //return rt.postForEntity(uriFacJerome, utilisateur, ResponseEntity.class);
 
-                //return rt.postForEntity(uriHomeJulien, utilisateur, ResponseEntity.class);
-                //return rt.postForEntity(uriFacJulien, utilisateur, ResponseEntity.class);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                return null;
-            }
         }
 
         @Override
