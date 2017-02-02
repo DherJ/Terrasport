@@ -9,11 +9,11 @@
         <item
             android:id="@+id/nav_mes_evenements"
             android:icon="@drawable/ic_map"
-            android:title="@string/mes_evenements"/>
+            android:title="@string/mes_evenements" />
         <item
             android:id="@+id/nav_participation"
             android:icon="@drawable/ic_personne"
-            android:title="@string/participations"/>
+            android:title="@string/participations" />
         <item
             android:id="@+id/nav_demandes_participation"
             android:icon="@drawable/ic_personne"
