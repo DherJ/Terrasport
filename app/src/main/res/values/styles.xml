@@ -10,6 +10,13 @@
         <item name="android:colorBackground">@color/background_material_dark_1</item>
         <item name="android:textColorPrimary">@color/cast_expanded_controller_text_color</item>
         <item name="android:textColorSecondary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:textColorTertiary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:fastScrollTextColor">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorLink">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorHint">@color/cast_expanded_controller_text_color</item>
+        <item name="android:actionMenuTextColor">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColor">@color/cast_expanded_controller_text_color</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

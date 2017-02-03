@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -99,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 utilisateur.setSexe(selectSexe.getSelectedItem().toString());
+
             }
 
             @Override
@@ -372,6 +374,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 return rt.postForEntity(URI, utilisateur, ResponseEntity.class);
 
 
+
+
+        }
+
+        @Override
+        protected void onPostExecute(ResponseEntity<ResponseEntity> responseEntityResponseEntity) {
+            super.onPostExecute(responseEntityResponseEntity);
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
 
         @Override
