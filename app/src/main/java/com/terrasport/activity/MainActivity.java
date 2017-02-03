@@ -1,5 +1,6 @@
 package com.terrasport.activity;
 
+import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import com.google.gson.Gson;
 import com.terrasport.R;
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         private NavigationView navigationView;
         private Fragment fragment;
         private AllParticipationEvent participationsEvent;
+
+        private Dialog dialog;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -168,5 +172,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case 100:
+                dialog=new Dialog(MainActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.view_dialbox_add_event);
+                /*
+                Button restart=(Button)dialog.findViewById(R.id.restart);
+                restart.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        //whatever code you want to execute on restart
+                    }
+                });
+                */
+                break;
+            default: break;
+        }
+        return dialog;
     }
 }

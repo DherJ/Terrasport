@@ -24,7 +24,7 @@ public class Globals {
             instance = new Globals();
         }
         instance.baseUrl = "http://192.168.1.24:8080/";
-        //instance.baseUrl = "http://172.19.137.107:8080/";
+        // instance.baseUrl = "http://172.19.147.147:8080/";
         return instance;
     }
 }

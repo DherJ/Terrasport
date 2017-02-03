@@ -28,44 +28,28 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_terrain_est_public"/>
+            android:orientation="horizontal">
 
-        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_terrain_est_occupe"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_terrain_est_public"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/ajout_evenement"
-                android:text="@string/ajouter_evenement"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#8cc24a"
-                android:textSize="@dimen/button_evenement_text_size"
-                android:onClick="addEvenement"/>
+                android:id="@+id/text_terrain_est_occupe"/>
+
         </LinearLayout>
 
     </LinearLayout>

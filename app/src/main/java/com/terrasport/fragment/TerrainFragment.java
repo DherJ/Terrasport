@@ -1,7 +1,12 @@
 package com.terrasport.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,14 +18,22 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,10 +45,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.terrasport.R;
+import com.terrasport.activity.MainActivity;
 import com.terrasport.asyncTask.LoadTerrainAsyncTask;
+import com.terrasport.model.Evenement;
 import com.terrasport.model.Terrain;
+import com.terrasport.view.CustomDialogView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,12 +66,22 @@ import java.util.List;
  * Use the {@link TerrainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TerrainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class TerrainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+
+    private static final String PRIVE = "Privé";
+    private static final String PUBLIC = "Public";
+    private static final String OCCUPE = "Occupé";
+    private static final String LIBRE = "Libre";
+
+    private Calendar calendar;
+    private DateFormat dateFormat;
+    private SimpleDateFormat timeFormat;
 
     private OnFragmentInteractionListener mListener;
 
     private LoadTerrainAsyncTask mTask;
     private List<Terrain> terrains;
+    private List<Evenement> evenements;
 
     private GoogleMap mGoogleMap;
 
@@ -85,6 +114,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.terrains = new ArrayList<Terrain>();
+        this.evenements = new ArrayList<Evenement>();
         mTask = new LoadTerrainAsyncTask(this);
         mTask.execute();
         mMarkersHashMap = new HashMap<>();
@@ -131,6 +161,10 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         mListener = null;
     }
 
+    public void addEvenement(View v) {
+        Toast.makeText(getContext(), "Ajout Evenement", Toast.LENGTH_SHORT).show();
+    }
+
     public void updateList(List<Terrain> result) {
         this.terrains = result;
     }
@@ -156,6 +190,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         if (drawable != null)
             drawable.draw(canvas);
         customMarkerView.draw(canvas);
+
         return returnedBitmap;
     }
 
@@ -178,18 +213,10 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                         drawable = R.drawable.map_marker_rugby;
                         break;
                     case 4:
-                        drawable = R.drawable.map_marker_handball;
+                        drawable = R.drawable.map_marker_foot;
                         break;
                 }
-                /*
-                if(Boolean.TRUE.equals(this.terrains.get(i).getIsPublic())) {
-                    bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, this.terrains.get(i).getIsPublic()));
-                } else {
-                    bitmap = BitmapDescriptorFactory.fromResource(drawable);
-                }
-                */
                 bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, this.terrains.get(i).getIsPublic()));
-                //bitmap = BitmapDescriptorFactory.fromResource(drawable);
                 Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(this.terrains.get(i).getIsOccupe()+"").snippet("This is my spot!")
                         .icon(bitmap));
                 mMarkersHashMap.put(marker, this.terrains.get(i));
@@ -203,6 +230,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         mGoogleMap = googleMap;
 
         mGoogleMap.setOnMarkerClickListener(this);
+        mGoogleMap.setOnInfoWindowClickListener(this);
 
         String context = Context.LOCATION_SERVICE;
         locationManager = (LocationManager) getContext().getSystemService(context);
@@ -239,17 +267,57 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         }
 
         setTerrainsMarkers();
+
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        /*
-        BitmapDescriptor bitmap = null;
-        Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT).show();
-        bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.map_marker_basket));
-        marker.setIcon(bitmap);
-        */
         return false;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Terrain terrain = mMarkersHashMap.get(marker);
+        Toast.makeText(getContext(), "TestInfo", Toast.LENGTH_SHORT).show();
+        if(terrain != null && Boolean.FALSE.equals(terrain.getIsOccupe())) {
+            // on affiche le formulaire our créer un éveènement
+
+            final Dialog dialog = new Dialog(getContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.view_dialbox_add_event);
+
+            Button acceptButton = (Button) dialog.findViewById(R.id.btn_yes);
+            Button declineButton = (Button) dialog.findViewById(R.id.btn_no);
+
+            declineButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    dialog.dismiss();
+                }
+            });
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    //fragmentManager.beginTransaction().remove(f).commit();
+                    //finish();
+                    Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
     }
 
     /**
@@ -268,8 +336,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
 
-    public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
-    {
+    public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         public MarkerInfoWindowAdapter()
         {
         }
@@ -283,14 +350,27 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         @Override
         public View getInfoContents(Marker marker)
         {
-            View v  = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker_add_evenement, null);
+            View v = null;
+            if( !marker.getTitle().equals("Ma position") ) {
 
-            Terrain terrain = mMarkersHashMap.get(marker);
+                    Terrain terrain = mMarkersHashMap.get(marker);
+                    if (Boolean.TRUE.equals(terrain.getIsOccupe())) {
+                        v = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
+                    } else {
+                        v = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker_add_evenement, null);
+                    }
 
-            ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_image);
+                    ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_image);
 
-            markerIcon.setImageResource(manageMarkerIcon(terrain));
+                    TextView textViewNomTerrain = (TextView) v.findViewById(R.id.text_nom_terrain);
+                    TextView textViewEstPublic = (TextView) v.findViewById(R.id.text_terrain_est_public);
+                    TextView textViewEstOccupe = (TextView) v.findViewById(R.id.text_terrain_est_occupe);
+                    textViewNomTerrain.setText(terrain.getNom());
+                    textViewEstPublic.setText(terrain.getIsPublic() ? PUBLIC : PRIVE);
+                    textViewEstOccupe.setText(terrain.getIsOccupe() ? OCCUPE : LIBRE);
 
+                    markerIcon.setImageResource(manageMarkerIcon(terrain));
+            }
             return v;
         }
     }

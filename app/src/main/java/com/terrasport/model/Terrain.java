@@ -5,10 +5,12 @@ public class Terrain {
 	private Integer id;
 	private String latitude;
 	private String longitude;
+	private String nom;
 	private boolean isPublic;
 	private boolean isOccupe;
 	private Sport sport;
-	
+	private Evenement evenementEnCours;
+
 	public Integer getId() {
 		return id;
 	}
@@ -44,5 +46,17 @@ public class Terrain {
 	}
 	public void setSport(Sport sport) {
 		this.sport = sport;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public Evenement getEvenementEnCours() {
+		return evenementEnCours;
+	}
+	public void setEvenementEnCours(Evenement evenementEnCours) {
+		this.evenementEnCours = evenementEnCours;
 	}
 }

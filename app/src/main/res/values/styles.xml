@@ -10,6 +10,11 @@
         <item name="android:colorBackground">@color/background_material_dark</item>
     </style>
 
+    <style name="AppTheme.Marker" parent="AppTheme">
+        <item name="background">@color/background_material_dark</item>
+        <item name="android:textColor">@color/common_google_signin_btn_text_dark_default</item>
+    </style>
+
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

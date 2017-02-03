@@ -11,8 +11,8 @@
 
         <ImageView
             android:id="@+id/marker_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null"/>
 
