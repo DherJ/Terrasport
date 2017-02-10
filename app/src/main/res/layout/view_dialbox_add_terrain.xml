@@ -15,7 +15,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:text="@string/titre_ajout_evenement"
+                android:text="@string/titre_ajout_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.TitleDialBox" />
@@ -35,16 +35,25 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="15dp" >
 
-            <CalendarView
-                android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_map"
+            android:id="@+id/imageView"
+            android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/text_adresse_terrain"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/calendarView"
-                android:layout_weight="1"
-                android:theme="@style/AppTheme.MapView" />
+                android:theme="@style/AppTheme.MapView"
+                android:layout_weight="1.5" />
 
         </LinearLayout>
 
@@ -64,45 +73,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TimePicker
-                android:id="@+id/time_picker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:theme="@style/AppTheme.MapView" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="15dp" >
 
             <TextView
-                android:text="@string/niveau_cible"
+                android:text="@string/type_de_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.MapView"
                 android:layout_weight="1.5" />
 
             <Spinner
-                android:id="@+id/select_niveau"
+                android:id="@+id/select_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.Spinner" />
@@ -116,17 +98,17 @@
             android:layout_margin="15dp" >
 
             <TextView
-                android:text="@string/nombre_de_places_disponibles"
+                android:text="@string/nom_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.MapView"
                 android:layout_weight="1.5" />
 
             <EditText
-                android:id="@+id/edit_nb_places_disponibles"
+                android:id="@+id/edit_nom_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="text"
                 android:theme="@style/AppTheme.MapView"
                 android:layout_weight="0.5"
                 android:layout_gravity="end"/>
@@ -140,20 +122,24 @@
             android:layout_margin="15dp">
 
             <TextView
-                android:text="@string/nombre_de_places_restantes"
+                android:text="@string/terrain_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.MapView"
                 android:layout_weight="1.5" />
 
-            <EditText
-                android:id="@+id/edit_nb_places_restantes"
-                android:layout_width="wrap_content"
+            <ToggleButton
+                android:id="@+id/switch_terrain_public"
+                android:background="@drawable/toggle_selector"
+                android:layout_marginBottom="20dp"
+                android:text="ToggleButton"
+                android:textOn="OUI"
+                android:textOff="NON"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:theme="@style/AppTheme.MapView"
+                android:layout_width="wrap_content"
                 android:layout_weight="0.5"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end"
+                android:theme="@style/AppTheme.MapView" />
 
         </LinearLayout>
 

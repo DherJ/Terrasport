@@ -6,8 +6,45 @@
         <item name="colorPrimary">@color/primary_material_dark</item>
         <item name="colorPrimaryDark">@color/primary_dark_material_dark</item>
         <item name="colorAccent">@color/accent_material_dark</item>
-        <!--<item name="colorBackground">@color/background_material_dark</item>-->
-        <item name="android:colorBackground">@color/background_material_dark</item>
+        <!--<item name="colorBackground">@color/background_material_dark</item> -->
+        <item name="android:colorBackground">@color/background_material_dark_1</item>
+        <item name="android:textColorPrimary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorSecondary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:textColorTertiary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:fastScrollTextColor">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorLink">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorHint">@color/cast_expanded_controller_text_color</item>
+        <item name="android:actionMenuTextColor">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColor">@color/cast_expanded_controller_text_color</item>
+    </style>
+
+    <style name="AppTheme.MapView">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textColorPrimary">@color/dark</item>
+        <item name="android:textColorSecondary">@color/dark</item>
+        <item name="android:textColorTertiary">@color/dark</item>
+        <item name="android:textColorLink">@color/dark</item>
+        <item name="android:textColorHint">@color/dark</item>
+    </style>
+
+    <style name="AppTheme.Spinner" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textColorPrimary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorSecondary">@color/dark</item>
+        <item name="android:textColorTertiary">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorLink">@color/cast_expanded_controller_text_color</item>
+        <item name="android:textColorHint">@color/cast_expanded_controller_text_color</item>
+    </style>
+
+    <style name="AppTheme.TitleDialBox" parent="@android:style/Theme.Dialog">
+        <item name="android:textAppearance">@android:style/TextAppearance.DialogWindowTitle</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/wallet_holo_blue_light</item>
+        <item name="android:layout_marginLeft">20dp</item>
     </style>
 
     <style name="AppTheme.Marker" parent="AppTheme">

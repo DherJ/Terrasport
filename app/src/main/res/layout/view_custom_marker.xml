@@ -24,7 +24,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/text_nom_terrain"/>
+                android:id="@+id/text_nom_terrain"
+                android:textColor="@color/dark"/>
 
         </LinearLayout>
 
@@ -36,7 +37,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/text_terrain_est_public"/>
+                android:id="@+id/text_terrain_est_public"
+                android:textColor="@color/dark"/>
 
         </LinearLayout>
 
@@ -48,7 +50,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/text_terrain_est_occupe"/>
+                android:id="@+id/text_terrain_est_occupe"
+                android:textColor="@color/dark"/>
 
         </LinearLayout>
 

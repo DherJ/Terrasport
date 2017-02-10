@@ -16,6 +16,7 @@ import com.terrasport.adapter.ParticipationAVenirRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadParticipationAVenirAsyncTask;
 import com.terrasport.event.AllParticipationEvent;
 import com.terrasport.model.Participation;
+import com.terrasport.model.Utilisateur;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -54,6 +55,11 @@ public class ParticipationAVenirFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable(ALL_PARTICIPATIONS_EVENT, allParticipationsEvent);
         fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ParticipationAVenirFragment newInstance(Utilisateur utilisateur) {
+        ParticipationAVenirFragment fragment = new ParticipationAVenirFragment();
         return fragment;
     }
 

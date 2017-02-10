@@ -1,5 +1,6 @@
 package com.terrasport.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class Utilisateur {
@@ -14,7 +15,7 @@ public class Utilisateur {
 	private String sexe;
 	
 	private List<CompetenceSport> competencesSport;
-	
+
 	public Integer getId() {
 		return id;
 	}

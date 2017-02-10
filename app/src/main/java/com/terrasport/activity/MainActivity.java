@@ -1,8 +1,10 @@
 package com.terrasport.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +29,7 @@ import com.terrasport.fragment.TerrainFragment;
 import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
+import com.terrasport.model.Utilisateur;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener, DemandeParticipationFragment.OnListFragmentInteractionListener, EvenementUtilisateurFragment.OnListFragmentInteractionListener, TerrainFragment.OnFragmentInteractionListener {
 
@@ -35,12 +38,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         private Fragment fragment;
         private AllParticipationEvent participationsEvent;
 
+        private Utilisateur utilisateur;
+
         private Dialog dialog;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             DrawerLayout drawerLayout;
             super.onCreate(savedInstanceState);
+
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
+
+            Gson gson = new Gson();
+            utilisateur = gson.fromJson(getIntent().getStringExtra("utilisateur"), Utilisateur.class);
+
             setContentView(R.layout.activity_main);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             toolbar.setTitle(R.string.app_name);
@@ -141,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
+                Bundle bundle = new Bundle();
+                Gson gson = new Gson();
+                String utilisateurJson = gson.toJson(utilisateur);
+                bundle.putString("utilisateur", utilisateurJson);
+                fragment.setArguments(bundle);
             } catch (Exception e) {
                 e.printStackTrace();
             }

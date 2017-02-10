@@ -2,7 +2,6 @@ package com.terrasport.view;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +18,7 @@ public class CustomDialogView extends Dialog implements
         android.view.View.OnClickListener {
 
     public Dialog d;
-    public EditText editNbParticipants, editNbPlacesDisponibles;
+    public EditText editNbPlacesRestantes, editNbPlacesDisponibles;
     public Button yes, no;
 
     public CustomDialogView(Activity a) {
@@ -31,7 +30,7 @@ public class CustomDialogView extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.view_dialbox_add_event);
-        editNbParticipants = (EditText) findViewById(R.id.edit_nb_participants);
+        editNbPlacesRestantes = (EditText) findViewById(R.id.edit_nb_places_restantes);
         editNbPlacesDisponibles = (EditText) findViewById(R.id.edit_nb_places_disponibles);
         yes = (Button) findViewById(R.id.btn_yes);
         no = (Button) findViewById(R.id.btn_no);

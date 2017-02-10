@@ -46,9 +46,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ajouter_evenement">+ Evenement</string>
-    <string name="nombre_de_places_disponibles">Nombre de places disponibles</string>
+    <string name="nombre_de_places_disponibles">Nombre de places</string>
     <string name="nombre_de_participants">Nombre de participants</string>
     <string name="valider">Valider</string>
     <string name="annuler">Annuler</string>
+    <string name="titre_ajout_evenement">Ajouter un évènement</string>
+    <string name="niveau_cible">Niveau cible</string>
+    <string name="nombre_de_places_restantes">Nombre de places restantes</string>
+    <string name="titre_ajout_terrain">Ajouter un terrain</string>
+    <string name="type_de_terrain">Type de terrain</string>
+    <string name="nom_terrain">Nom du terrain</string>
+    <string name="terrain_public">Terrain public</string>
+    <string name="adresse_terrain">Adresse</string>
 
 </resources>

@@ -60,7 +60,9 @@
                 android:id="@+id/linear_layout_sexe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/common_google_signin_btn_text_dark_default">
 
                 <EditText
                     android:id="@+id/input_age"
@@ -80,7 +82,8 @@
                     android:entries="@array/sexe_array"
                     android:prompt="@string/utilisateur_select_sexe"
                     android:layout_weight="1"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="@color/common_google_signin_btn_text_dark_default"/>
 
             </LinearLayout>
 

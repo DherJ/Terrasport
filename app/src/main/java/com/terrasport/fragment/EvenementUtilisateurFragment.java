@@ -14,6 +14,7 @@ import com.terrasport.R;
 import com.terrasport.adapter.EvenementUtilisateurRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadEvenementUtilisateurAsyncTask;
 import com.terrasport.model.Evenement;
+import com.terrasport.model.Utilisateur;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,11 @@ public class EvenementUtilisateurFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static EvenementUtilisateurFragment newInstance(Utilisateur utilisateur) {
+        EvenementUtilisateurFragment fragment = new EvenementUtilisateurFragment();
         return fragment;
     }
 

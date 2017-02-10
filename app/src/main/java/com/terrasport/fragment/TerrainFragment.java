@@ -1,39 +1,46 @@
 package com.terrasport.fragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,19 +51,33 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.terrasport.R;
-import com.terrasport.activity.MainActivity;
+import com.terrasport.asyncTask.LoadNiveauAsyncTask;
+import com.terrasport.asyncTask.LoadSportAsyncTask;
 import com.terrasport.asyncTask.LoadTerrainAsyncTask;
 import com.terrasport.model.Evenement;
+import com.terrasport.model.Niveau;
+import com.terrasport.model.Sport;
 import com.terrasport.model.Terrain;
-import com.terrasport.view.CustomDialogView;
+import com.terrasport.model.Utilisateur;
+import com.terrasport.utils.Globals;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,22 +87,42 @@ import java.util.List;
  * Use the {@link TerrainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TerrainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class TerrainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private static final String PRIVE = "Privé";
     private static final String PUBLIC = "Public";
     private static final String OCCUPE = "Occupé";
     private static final String LIBRE = "Libre";
 
+    private final String URI_SAUVEGARDER_EVENEMENT = Globals.getInstance().getBaseUrl() + "evenement/sauvegarder";
+    private final String URI_SAUVEGARDER_TERRAIN = Globals.getInstance().getBaseUrl() + "terrain/sauvegarder";
+
+    /**  Elements pour ajouter un évènement **/
     private Calendar calendar;
-    private DateFormat dateFormat;
-    private SimpleDateFormat timeFormat;
+    private List<Niveau> niveaux;
+    private Niveau niveauCible;
+    private Integer nbPlacesRestantes;
+    private Integer nbPlacesDisponnibles;
+
+    /**  Elements pour ajouter un terrain **/
+    private String longitude;
+    private String latitude;
+    private String nomTerrain;
+    private boolean isTerrainPublic;
+    private Sport sportSelected;
+
 
     private OnFragmentInteractionListener mListener;
 
-    private LoadTerrainAsyncTask mTask;
+    private LoadTerrainAsyncTask mTerrainTask;
+    private LoadSportAsyncTask mSportTask;
+    private LoadNiveauAsyncTask mNiveauxTask;
     private List<Terrain> terrains;
+    private List<Sport> sports;
     private List<Evenement> evenements;
+    private Terrain terrain;
+
+    private Utilisateur utilisateur;
 
     private GoogleMap mGoogleMap;
 
@@ -98,15 +139,14 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param utilisateur Parameter 1.
      * @return A new instance of fragment TerrainFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static TerrainFragment newInstance(String param1, String param2) {
+    public static TerrainFragment newInstance(Utilisateur utilisateur) {
         TerrainFragment fragment = new TerrainFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -114,10 +154,21 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.terrains = new ArrayList<Terrain>();
+        this.sports = new ArrayList<Sport>();
+        this.niveaux = new ArrayList<Niveau>();
         this.evenements = new ArrayList<Evenement>();
-        mTask = new LoadTerrainAsyncTask(this);
-        mTask.execute();
+        mTerrainTask = new LoadTerrainAsyncTask(this);
+        mTerrainTask.execute();
+        mSportTask = new LoadSportAsyncTask(this);
+        mSportTask.execute();
+        mNiveauxTask = new LoadNiveauAsyncTask(this);
+        mNiveauxTask.execute();
         mMarkersHashMap = new HashMap<>();
+        calendar = new GregorianCalendar();
+
+        Gson gson = new Gson();
+        utilisateur = gson.fromJson(this.getArguments().getString("utilisateur"), Utilisateur.class);
+
     }
 
     @Nullable
@@ -161,12 +212,49 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         mListener = null;
     }
 
-    public void addEvenement(View v) {
-        Toast.makeText(getContext(), "Ajout Evenement", Toast.LENGTH_SHORT).show();
+    public void addTerrain() {
+
+        Terrain terrain = new Terrain();
+        terrain.setNom(nomTerrain);
+        terrain.setIsOccupe(Boolean.FALSE);
+        terrain.setIsPublic(isTerrainPublic);
+        terrain.setSport(sportSelected);
+
+        RestTemplate rt = new RestTemplate();
+
+        rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
+        rt.postForEntity(URI_SAUVEGARDER_TERRAIN, terrain, ResponseEntity.class);
+    }
+
+    public void addEvenement() {
+        Timestamp time = new Timestamp(calendar.getTimeInMillis());
+
+        Evenement evenement = new Evenement();
+        evenement.setTerrain(terrain);
+        evenement.setSport(terrain.getSport());
+        evenement.setNbPlaces(nbPlacesDisponnibles);
+        evenement.setNbPlacesRestantes(nbPlacesRestantes);
+        evenement.setUtilisateurCreateur(utilisateur);
+        evenement.setDate(time);
+        evenement.setNiveauCible(niveauCible);
+        RestTemplate rt = new RestTemplate();
+
+        rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
+        rt.postForEntity(URI_SAUVEGARDER_EVENEMENT, evenement, ResponseEntity.class);
     }
 
     public void updateList(List<Terrain> result) {
         this.terrains = result;
+    }
+
+    public void updateListSport(List<Sport> result) {
+        this.sports = result;
+    }
+
+    public void updateListNiveaux(List<Niveau> result) {
+        this.niveaux = result;
     }
 
     private Bitmap getMarkerBitmapFromView(@DrawableRes int resId, boolean isPublic) {
@@ -231,6 +319,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnInfoWindowClickListener(this);
+        mGoogleMap.setOnMapLongClickListener(this);
 
         String context = Context.LOCATION_SERVICE;
         locationManager = (LocationManager) getContext().getSystemService(context);
@@ -277,8 +366,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Terrain terrain = mMarkersHashMap.get(marker);
-        Toast.makeText(getContext(), "TestInfo", Toast.LENGTH_SHORT).show();
+        terrain = mMarkersHashMap.get(marker);
         if(terrain != null && Boolean.FALSE.equals(terrain.getIsOccupe())) {
             // on affiche le formulaire our créer un éveènement
 
@@ -286,23 +374,90 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.view_dialbox_add_event);
 
+            EditText editNbPlacesDisponnibles = (EditText) dialog.findViewById(R.id.edit_nb_places_disponibles);
+            editNbPlacesDisponnibles.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    nbPlacesDisponnibles = Integer.parseInt(s.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+
+            EditText editNbPlacesRestantes = (EditText) dialog.findViewById(R.id.edit_nb_places_restantes);
+            editNbPlacesRestantes.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    nbPlacesRestantes = Integer.parseInt(s.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+
+            Spinner spinner = (Spinner) dialog.findViewById(R.id.select_niveau);
+            List<String> listeNiveaux = new ArrayList<>();
+            for(int i = 0; i < this.niveaux.size(); i++) {
+                listeNiveaux.add(this.niveaux.get(i).getLibelle());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_spinner_item, listeNiveaux);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) view).setTextColor(Color.BLACK);
+                    niveauCible = niveaux.get(position);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+
+            final CalendarView calendarView = (CalendarView) dialog.findViewById(R.id.calendarView);
+            calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                @Override
+                public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                }
+            });
+
+            TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.time_picker);
+            timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calendar.set(Calendar.MINUTE, minute);
+                }
+            });
+
             Button acceptButton = (Button) dialog.findViewById(R.id.btn_yes);
             Button declineButton = (Button) dialog.findViewById(R.id.btn_no);
 
             declineButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Close dialog
                     dialog.dismiss();
                 }
             });
+
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Close dialog
                     //fragmentManager.beginTransaction().remove(f).commit();
                     //finish();
-                    Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT).show();
+                    addEvenement();
                     dialog.dismiss();
                 }
             });
@@ -318,6 +473,101 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+
+        longitude = String.valueOf(latLng.longitude);
+        latitude = String.valueOf(latLng.latitude);
+
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.view_dialbox_add_terrain);
+
+        TextView adresseTerrain = (TextView) dialog.findViewById(R.id.text_adresse_terrain);
+
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                adresseTerrain.setText(addresses.get(0).getAddressLine(0));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        EditText editNomTerrain = (EditText) dialog.findViewById(R.id.edit_nom_terrain);
+        editNomTerrain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                nomTerrain = s.toString();
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        ToggleButton switchTerrainPublic = (ToggleButton) dialog.findViewById(R.id.switch_terrain_public);
+        switchTerrainPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    isTerrainPublic = true;
+                }
+                else {
+                    isTerrainPublic = false;
+                }
+            }
+        });
+
+
+        Spinner spinner = (Spinner) dialog.findViewById(R.id.select_sport);
+        List<String> listeSport = new ArrayList<>();
+        for(int i = 0; i < this.niveaux.size(); i++) {
+            listeSport.add(this.sports.get(i).getLibelle());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, listeSport);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) view).setTextColor(Color.BLACK);
+                sportSelected = sports.get(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        Button acceptButton = (Button) dialog.findViewById(R.id.btn_yes);
+        Button declineButton = (Button) dialog.findViewById(R.id.btn_no);
+
+        declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close dialog
+                //fragmentManager.beginTransaction().remove(f).commit();
+                //finish();
+                addTerrain();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     /**
@@ -348,17 +598,12 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         }
 
         @Override
-        public View getInfoContents(Marker marker)
-        {
+        public View getInfoContents(Marker marker) {
             View v = null;
             if( !marker.getTitle().equals("Ma position") ) {
 
                     Terrain terrain = mMarkersHashMap.get(marker);
-                    if (Boolean.TRUE.equals(terrain.getIsOccupe())) {
-                        v = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
-                    } else {
-                        v = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker_add_evenement, null);
-                    }
+                    v = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker_add_evenement, null);
 
                     ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_image);
 
@@ -375,7 +620,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         }
     }
 
-    private int manageMarkerIcon(Terrain terrain) {
+     private int manageMarkerIcon(Terrain terrain) {
         int drawable = 0;
         switch(terrain.getSport().getId()) {
             case 1:

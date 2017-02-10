@@ -9,6 +9,7 @@ public class Evenement {
 	private boolean prive;
 	private Integer nbPlaces;
 	private Integer nbPlacesRestantes;
+	private Integer nbParticipants;
 	private Timestamp date;
 	private Terrain terrain;
 	private Sport sport;
@@ -82,5 +83,11 @@ public class Evenement {
 	}
 	public void setDemandesParticipation(List<DemandeParticipation> demandesParticipation) {
 		this.demandesParticipation = demandesParticipation;
+	}
+	public Integer getNbParticipants() {
+		return nbParticipants;
+	}
+	public void setNbParticipants(Integer nbParticipants) {
+		this.nbParticipants = nbParticipants;
 	}
 }

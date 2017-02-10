@@ -15,6 +15,7 @@ import com.terrasport.adapter.DemandeParticipationRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
 import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
+import com.terrasport.model.Utilisateur;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,11 @@ public class DemandeParticipationFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static DemandeParticipationFragment newInstance(Utilisateur utilisateur) {
+        DemandeParticipationFragment fragment = new DemandeParticipationFragment();
         return fragment;
     }
 
