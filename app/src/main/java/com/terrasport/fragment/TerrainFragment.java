@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -212,19 +214,44 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         mListener = null;
     }
 
-    public void addTerrain() {
+    public void addTerrain(LatLng latLng) {
 
         Terrain terrain = new Terrain();
         terrain.setNom(nomTerrain);
         terrain.setIsOccupe(Boolean.FALSE);
         terrain.setIsPublic(isTerrainPublic);
         terrain.setSport(sportSelected);
+        terrain.setLatitude(latitude);
+        terrain.setLongitude(longitude);
 
         RestTemplate rt = new RestTemplate();
-
         rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         rt.getMessageConverters().add(new StringHttpMessageConverter());
         rt.postForEntity(URI_SAUVEGARDER_TERRAIN, terrain, ResponseEntity.class);
+
+        ajouterMarketTerrain(terrain, latLng);
+    }
+
+    public void ajouterMarketTerrain(Terrain terrain, LatLng latLng) {
+        int drawable = 0;
+        switch(terrain.getSport().getId()) {
+            case 1:
+                drawable = R.drawable.map_marker_foot;
+                break;
+            case 2:
+                drawable = R.drawable.map_marker_basket;
+                break;
+            case 3:
+                drawable = R.drawable.map_marker_rugby;
+                break;
+            case 4:
+                drawable = R.drawable.map_marker_foot;
+                break;
+        }
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, terrain.getIsPublic()));
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(terrain.getIsOccupe()+"").snippet("This is my spot!")
+                .icon(bitmap));
+        mMarkersHashMap.put(marker, terrain);
     }
 
     public void addEvenement() {
@@ -476,7 +503,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
     @Override
-    public void onMapLongClick(LatLng latLng) {
+    public void onMapLongClick(final LatLng latLng) {
 
         longitude = String.valueOf(latLng.longitude);
         latitude = String.valueOf(latLng.latitude);
@@ -492,9 +519,19 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         geocoder = new Geocoder(getContext(), Locale.getDefault());
 
         try {
+            StringBuilder adreeseBuilder = new StringBuilder();
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             if (addresses != null && addresses.size() > 0) {
-                adresseTerrain.setText(addresses.get(0).getAddressLine(0));
+                if(addresses.get(0).getAddressLine(0) != null) {
+                    adreeseBuilder.append(addresses.get(0).getAddressLine(0) + " ");
+                }
+                if(addresses.get(0).getAddressLine(1) != null) {
+                    adreeseBuilder.append(addresses.get(0).getAddressLine(1) + " ");
+                }
+                if(addresses.get(0).getAddressLine(2) != null) {
+                    adreeseBuilder.append(addresses.get(0).getAddressLine(2) + " ");
+                }
+                adresseTerrain.setText(adreeseBuilder.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -514,18 +551,22 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
             }
         });
 
-        ToggleButton switchTerrainPublic = (ToggleButton) dialog.findViewById(R.id.switch_terrain_public);
+        final ImageView imageTerrainPublic = (ImageView) dialog.findViewById(R.id.image_terrain_public);
+        imageTerrainPublic.setImageResource(R.drawable.image_terrain_public);
+
+        SwitchCompat switchTerrainPublic = (SwitchCompat) dialog.findViewById(R.id.switch_terrain_public);
         switchTerrainPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     isTerrainPublic = true;
+                    imageTerrainPublic.setImageResource(R.drawable.image_terrain_public);
                 }
                 else {
                     isTerrainPublic = false;
+                    imageTerrainPublic.setImageResource(R.drawable.image_terrain_prive);
                 }
             }
         });
-
 
         Spinner spinner = (Spinner) dialog.findViewById(R.id.select_sport);
         List<String> listeSport = new ArrayList<>();
@@ -563,7 +604,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 // Close dialog
                 //fragmentManager.beginTransaction().remove(f).commit();
                 //finish();
-                addTerrain();
+                addTerrain(latLng);
                 dialog.dismiss();
             }
         });

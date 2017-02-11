@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/AppTheme.MapView">
 
@@ -44,7 +45,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_map"
+            android:background="@drawable/icone_map_add_terrain"
             android:id="@+id/imageView"
             android:layout_gravity="center"/>
 
@@ -81,13 +82,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1.5" />
+                android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/select_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.Spinner" />
+                android:theme="@style/AppTheme.Spinner"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
@@ -102,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1.5" />
+                android:layout_weight="1" />
 
             <EditText
                 android:id="@+id/edit_nom_terrain"
@@ -110,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:theme="@style/AppTheme.MapView"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:layout_gravity="end"/>
 
         </LinearLayout>
@@ -123,23 +125,27 @@
 
             <TextView
                 android:text="@string/terrain_public"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1.5" />
+                android:layout_weight="1"
+                android:layout_width="wrap_content" />
 
-            <ToggleButton
+            <ImageView
+                android:id="@+id/image_terrain_public"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_weight="1"
+                android:theme="@style/AppTheme.MapView"
+                android:layout_marginRight="80dp" />
+
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_terrain_public"
-                android:background="@drawable/toggle_selector"
-                android:layout_marginBottom="20dp"
-                android:text="ToggleButton"
-                android:textOn="OUI"
-                android:textOff="NON"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:checked="true"
                 android:layout_gravity="end"
-                android:theme="@style/AppTheme.MapView" />
+                android:theme="@style/MySwitch"
+                android:width="50dp" />
 
         </LinearLayout>
 
