@@ -90,7 +90,7 @@ public class EvenementFragment extends Fragment {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
 
-            adapter = new EvenementRecyclerViewAdapter(this.evenements, mListener);
+            adapter = new EvenementRecyclerViewAdapter(this.evenements, mListener, getContext());
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
@@ -101,7 +101,7 @@ public class EvenementFragment extends Fragment {
     public void updateListView(List<Evenement> newData) {
         evenements = newData;
         adapter.notifyDataSetChanged();
-        adapter = new EvenementRecyclerViewAdapter(evenements, mListener);
+        adapter = new EvenementRecyclerViewAdapter(evenements, mListener, getContext());
         recyclerView.setAdapter(adapter);
     }
 

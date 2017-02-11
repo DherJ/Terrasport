@@ -11,4 +11,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.terrasport.fragment.EvenementFragment"
-    tools:listitem="@layout/fragment_evenement" />
+    tools:listitem="@layout/fragment_evenement"
+    android:dividerPadding="20dp"/>
