@@ -36,10 +36,10 @@ Application Android qui permet de répertorier les terrains sportifs, d'en ajout
 
 ### Ajouter un terrain
 
-![Screenshot](./screens/ajout_terrain.png)
+![Screenshot](./screens/formulaire_ajout_terrain.png)
 
 ### Ajouter un évènement sur un terrain
 
-![Screenshot](./screens/ajout_evenement_1.png)
+![Screenshot](./screens/formulaire_ajout_evenement_1.png)
 
-![Screenshot](./screens/ajout_evenement_2.png)
+![Screenshot](./screens/formulaire_ajout_evenement_2.png)
