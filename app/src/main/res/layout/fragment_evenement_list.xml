@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_evenement"
-    android:name="com.terrasport.fragment.EvenementFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context="com.terrasport.fragment.EvenementFragment"
-    tools:listitem="@layout/fragment_evenement"
-    android:dividerPadding="20dp"/>
+    android:orientation="vertical" >
+
+
+
+           <!-- <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                app:srcCompat="@drawable/shape_button_add_evt"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:clickable="true"
+                android:background="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
+                android:layout_gravity="bottom|right" /> -->
+
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/recycler_list_evenement"
+                android:name="com.terrasport.fragment.EvenementFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:context="com.terrasport.fragment.EvenementFragment"
+                tools:listitem="@layout/fragment_evenement"
+                android:dividerPadding="5dp"
+                android:divider="@drawable/separateur_list" >
+
+            </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        android:src="@drawable/icone_add"
+        app:layout_anchorGravity="bottom|right|end" />
+
+</android.support.design.widget.CoordinatorLayout>

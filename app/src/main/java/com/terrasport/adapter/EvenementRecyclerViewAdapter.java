@@ -1,6 +1,8 @@
 package com.terrasport.adapter;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,10 @@ import com.terrasport.R;
 import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.model.Evenement;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Evenement} and makes a call to the
@@ -44,12 +49,36 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(mContext, Locale.getDefault());
+        StringBuilder adresseBuilder = new StringBuilder();
+        SimpleDateFormat formater = null;
+        formater = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        try {
+            addresses = geocoder.getFromLocation(Double.valueOf(mValues.get(position).getTerrain().getLatitude()), Double.valueOf(mValues.get(position).getTerrain().getLongitude()), 1);
+            if (addresses != null && addresses.size() > 0) {
+                if(addresses.get(0).getAddressLine(0) != null) {
+                    adresseBuilder.append(addresses.get(0).getAddressLine(0) + " ");
+                }
+                if(addresses.get(0).getAddressLine(1) != null) {
+                    adresseBuilder.append(addresses.get(0).getAddressLine(1) + " ");
+                }
+                if(addresses.get(0).getAddressLine(2) != null) {
+                    adresseBuilder.append(addresses.get(0).getAddressLine(2) + " ");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         holder.mItem = mValues.get(position);
 
-        holder.textViewDateEvenement.setText(mValues.get(position).getDate().toString());
+        holder.textViewDateEvenement.setText(formater.format(mValues.get(position).getDate()));
         holder.textViewUtilisateurProprietaire.setText("Crée par " + mValues.get(position).getUtilisateurCreateur().getNom());
         holder.textViewNiveauRecherche.setText("Niveau recherché: " + mValues.get(position).getNiveauCible().getLibelle().toString());
-        holder.textViewAdresseEvenement.setText(mValues.get(position).getTerrain().getLongitude());
+        holder.textViewAdresseEvenement.setText(adresseBuilder.toString());
         holder.textViewNbParticipants.setText(mValues.get(position).getNbParticipants() + " participants/" + mValues.get(position).getNbPlaces());
 
         holder.progressBarParticipants.setMax(mValues.get(position).getNbPlaces());

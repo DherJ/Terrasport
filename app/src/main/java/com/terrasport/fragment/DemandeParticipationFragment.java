@@ -1,6 +1,7 @@
 package com.terrasport.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,8 +15,8 @@ import com.terrasport.R;
 import com.terrasport.adapter.DemandeParticipationRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
 import com.terrasport.model.DemandeParticipation;
-import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,8 @@ public class DemandeParticipationFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener));
+            recyclerView.setAdapter(new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener, getContext()));
+            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
         }
         return view;
     }
@@ -111,7 +113,7 @@ public class DemandeParticipationFragment extends Fragment {
 
     public void updateListView(List<DemandeParticipation> result) {
         demandesParticipation = result;
-        adapter = new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener);
+        adapter = new DemandeParticipationRecyclerViewAdapter(demandesParticipation, mListener, getContext());
         recyclerView.setAdapter(adapter);
     }
 

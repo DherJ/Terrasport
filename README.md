@@ -30,6 +30,11 @@ Application Android qui permet de répertorier les terrains sportifs, d'en ajout
 
 ![Screenshot](./screens/liste_evenements.png)
 
+### Afficher la liste des demandes de participation
+
+![Screenshot](./screens/liste_demandes_participations.png)
+
+
 ### La google map qui affiche l'ensemble des terrains
 
 ![Screenshot](./screens/map.png)

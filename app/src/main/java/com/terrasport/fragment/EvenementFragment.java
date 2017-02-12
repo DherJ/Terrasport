@@ -3,12 +3,15 @@ package com.terrasport.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.terrasport.R;
 import com.terrasport.adapter.EvenementRecyclerViewAdapter;
@@ -85,10 +88,13 @@ public class EvenementFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_evenement_list, container, false);
+        View myRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_evenement);
+        FloatingActionButton imageButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
 
-        if (view instanceof RecyclerView) {
+
+        if (myRecyclerView instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) myRecyclerView;
 
             adapter = new EvenementRecyclerViewAdapter(this.evenements, mListener, getContext());
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -100,7 +106,7 @@ public class EvenementFragment extends Fragment {
 
     public void updateListView(List<Evenement> newData) {
         evenements = newData;
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
         adapter = new EvenementRecyclerViewAdapter(evenements, mListener, getContext());
         recyclerView.setAdapter(adapter);
     }
