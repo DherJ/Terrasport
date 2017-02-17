@@ -37,7 +37,7 @@ public class EvenementUtilisateurRecyclerViewAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getId().toString());
+        holder.mIdView.setText(mValues.get(position).getSport().getLibelle());
         holder.mContentView.setText(mValues.get(position).getNbPlacesRestantes().toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
