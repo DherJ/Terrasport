@@ -21,7 +21,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,11 +37,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,8 +68,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -245,7 +239,16 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 drawable = R.drawable.map_marker_rugby;
                 break;
             case 4:
-                drawable = R.drawable.map_marker_foot;
+                drawable = R.drawable.map_marker_handball;
+                break;
+            case 5:
+                drawable = R.drawable.map_marker_golf;
+                break;
+            case 6:
+                drawable = R.drawable.map_marker_baseball;
+                break;
+            case 7:
+                drawable = R.drawable.map_marker_tennis;
                 break;
         }
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, terrain.getIsPublic()));
@@ -328,7 +331,16 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                         drawable = R.drawable.map_marker_rugby;
                         break;
                     case 4:
-                        drawable = R.drawable.map_marker_foot;
+                        drawable = R.drawable.map_marker_handball;
+                        break;
+                    case 5:
+                        drawable = R.drawable.map_marker_golf;
+                        break;
+                    case 6:
+                        drawable = R.drawable.map_marker_baseball;
+                        break;
+                    case 7:
+                        drawable = R.drawable.map_marker_tennis;
                         break;
                 }
                 bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, this.terrains.get(i).getIsPublic()));
@@ -675,6 +687,15 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
             case 4:
                 drawable = R.drawable.map_marker_handball;
+                break;
+            case 5:
+                drawable = R.drawable.map_marker_golf;
+                break;
+            case 6:
+                drawable = R.drawable.map_marker_baseball;
+                break;
+            case 7:
+                drawable = R.drawable.map_marker_tennis;
                 break;
         }
         return drawable;
