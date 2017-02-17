@@ -39,7 +39,6 @@ Application Android qui permet de répertorier les terrains sportifs, d'en ajout
 
 ![Screenshot](./screens/map.png)
 
-### Visualiser le détail d'un terrain
 
 ![Screenshot](./screens/map_click_marker.png)
 
