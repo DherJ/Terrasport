@@ -83,13 +83,16 @@ public class DemandeParticipationRecyclerViewAdapter extends RecyclerView.Adapte
 
         switch(mValues.get(position).getEtat().getId()) {
             case 1:
-                holder.imageEtatDemande.setImageResource(R.drawable.icone_attente);
+                // validee
+                holder.imageEtatDemande.setImageResource(R.drawable.ic_validee);
                 break;
             case 2:
-                holder.imageEtatDemande.setImageResource(R.drawable.icone_validee);
+                // attente
+                holder.imageEtatDemande.setImageResource(R.drawable.ic_attente);
                 break;
             case 3:
-                holder.imageEtatDemande.setImageResource(R.drawable.icone_refusee);
+                // refusee
+                holder.imageEtatDemande.setImageResource(R.drawable.ic_refusee);
                 break;
         }
 
