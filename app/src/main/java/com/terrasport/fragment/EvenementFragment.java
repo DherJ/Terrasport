@@ -3,21 +3,20 @@ package com.terrasport.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.adapter.EvenementRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadEvenementAsyncTask;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;
+import com.terrasport.utils.Globals;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ public class EvenementFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -40,7 +40,8 @@ public class EvenementFragment extends Fragment {
     private RecyclerView recyclerView;
     private LoadEvenementAsyncTask mTask;
     private List<Evenement> evenements;
-    public RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
+    private Utilisateur utilisateur;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -87,16 +88,17 @@ public class EvenementFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
 
+        Gson gson = new Gson();
+        utilisateur = gson.fromJson(getActivity().getIntent().getStringExtra("utilisateur"), Utilisateur.class);
+
         View view = inflater.inflate(R.layout.fragment_evenement_list, container, false);
         View myRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_evenement);
-        FloatingActionButton imageButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-
 
         if (myRecyclerView instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) myRecyclerView;
 
-            adapter = new EvenementRecyclerViewAdapter(this.evenements, mListener, getContext());
+            adapter = new EvenementRecyclerViewAdapter(this.evenements, mListener, getContext(), utilisateur);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
@@ -106,8 +108,7 @@ public class EvenementFragment extends Fragment {
 
     public void updateListView(List<Evenement> newData) {
         evenements = newData;
-        //adapter.notifyDataSetChanged();
-        adapter = new EvenementRecyclerViewAdapter(evenements, mListener, getContext());
+        adapter = new EvenementRecyclerViewAdapter(evenements, mListener, getContext(), utilisateur);
         recyclerView.setAdapter(adapter);
     }
 

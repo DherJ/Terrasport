@@ -59,4 +59,8 @@
     <string name="terrain_public">Terrain public</string>
     <string name="adresse_terrain">Adresse</string>
 
+    <string name="titre_dialbox_confirmation">Confirmation</string>
+    <string name="text_dialbox_confirmation_envoie_demande">Etes vous sure de vouloir envoyer une demande de participation à cet évènement ?</string>
+    <string name="titre_dialbox_erreur_internet">Connection</string>
+    <string name="text_dialbox_erreur_internet">Vous n\'êtes pas connecté à internet veuillez réessayer ultérieurement</string>
 </resources>

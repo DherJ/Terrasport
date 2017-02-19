@@ -7,6 +7,8 @@
     <color name="background_material_dark_1">#303030</color>
     <color name="green_primary">#8cc24a</color>
     <color name="dark">#181818</color>
+    <color name="noir">#131212</color>
     <color name="indigo">#f53a3a</color>
     <color name="grey">#706e6e</color>
+    <color name="transparent_color">#00000000</color>
 </resources>

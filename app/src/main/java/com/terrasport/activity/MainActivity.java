@@ -141,37 +141,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Handle navigation view item clicks here.
             int id = item.getItemId();
 
-            if (id == R.id.nav_evenement) {
-                fragmentClass = EvenementFragment.class;
-            } else if (id == R.id.nav_mes_evenements) {
-                fragmentClass = EvenementUtilisateurFragment.class;
-            } else if (id == R.id.nav_participation) {
-                fragmentClass = ParticipationAVenirFragment.class;
-            } else if (id == R.id.nav_demandes_participation) {
-                fragmentClass = DemandeParticipationFragment.class;
-            } else if (id == R.id.nav_map_terrains) {
-                fragmentClass = TerrainFragment.class;
+            if(id == R.id.nav_logout) {
+                backToLoginActivity();
+            } else {
+                if (id == R.id.nav_evenement) {
+                    fragmentClass = EvenementFragment.class;
+                } else if (id == R.id.nav_mes_evenements) {
+                    fragmentClass = EvenementUtilisateurFragment.class;
+                } else if (id == R.id.nav_participation) {
+                    fragmentClass = ParticipationAVenirFragment.class;
+                } else if (id == R.id.nav_demandes_participation) {
+                    fragmentClass = DemandeParticipationFragment.class;
+                } else if (id == R.id.nav_map_terrains) {
+                    fragmentClass = TerrainFragment.class;
+                }
+
+
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    Bundle bundle = new Bundle();
+                    Gson gson = new Gson();
+                    String utilisateurJson = gson.toJson(utilisateur);
+                    bundle.putString("utilisateur", utilisateurJson);
+                    fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_menu, fragment).commit();
+
+                item.setChecked(true);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
             }
-
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-                Bundle bundle = new Bundle();
-                Gson gson = new Gson();
-                String utilisateurJson = gson.toJson(utilisateur);
-                bundle.putString("utilisateur", utilisateurJson);
-                fragment.setArguments(bundle);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_menu, fragment).commit();
-
-            item.setChecked(true);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
             return true;
         }
+
+    public void backToLoginActivity() {
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onListFragmentInteraction(Participation item) {

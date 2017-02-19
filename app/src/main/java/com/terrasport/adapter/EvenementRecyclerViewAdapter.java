@@ -1,5 +1,7 @@
 package com.terrasport.adapter;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,14 +11,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.fragment.EvenementFragment;
+import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
+import com.terrasport.model.Utilisateur;
+import com.terrasport.utils.Globals;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,14 +42,19 @@ import java.util.Locale;
  */
 public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<EvenementRecyclerViewAdapter.ViewHolder> {
 
+    private static final String URI_SAUVEGARDER_DEMANDE_PARTICIPATION = Globals.getInstance().getBaseUrl() + "demande-participation/sauvegarder";
+
     private List<Evenement> mValues;
     private EvenementFragment.OnListFragmentInteractionListener mListener;
     private Context mContext;
+    private Evenement evenementSelected;
+    private Utilisateur mUtilisateur;
 
-    public EvenementRecyclerViewAdapter(List<Evenement> items, EvenementFragment.OnListFragmentInteractionListener listener, Context context) {
+    public EvenementRecyclerViewAdapter(List<Evenement> items, EvenementFragment.OnListFragmentInteractionListener listener, Context context, Utilisateur utilisateur) {
         mValues = items;
         mListener = listener;
         mContext = context;
+        mUtilisateur = utilisateur;
     }
 
     @Override
@@ -102,7 +119,36 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
         holder.buttonEnvoyerDemandeParticipation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Test" , Toast.LENGTH_SHORT).show();
+                evenementSelected = holder.mItem;
+
+                final Dialog dialog = new Dialog(mContext);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.view_dialbox_confirmation_envoyer_demande);
+                Button acceptButton = (Button) dialog.findViewById(R.id.cadbtnOk);
+                Button declineButton = (Button) dialog.findViewById(R.id.cadbtnCancel);
+
+                declineButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "No" , Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Close dialog
+                        //fragmentManager.beginTransaction().remove(f).commit();
+                        //finish();
+
+                        Toast.makeText(mContext, "Yes" , Toast.LENGTH_SHORT).show();
+                        addDemandeParticipation(evenementSelected);
+
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 
@@ -117,6 +163,19 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
             }
         });
     }
+
+    public void addDemandeParticipation(Evenement evenement) {
+
+        DemandeParticipation demandeParticipation = new DemandeParticipation();
+        demandeParticipation.setUtilisateur(mUtilisateur);
+        demandeParticipation.setEvenement(evenement);
+
+        RestTemplate rt = new RestTemplate();
+        rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
+        rt.postForEntity(URI_SAUVEGARDER_DEMANDE_PARTICIPATION, demandeParticipation, ResponseEntity.class);
+    }
+
 
     @Override
     public int getItemCount() {

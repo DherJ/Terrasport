@@ -18,6 +18,8 @@ Application Android qui permet de répertorier les terrains sportifs, d'en ajout
 
 ![Screenshot](./screens/accueil.png)
 
+![Screenshot](./screens/erreur_internet.png)
+
 ### Créer un compte
 
 ![Screenshot](./screens/formulaire_register.png)
