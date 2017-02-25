@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.adapter.ParticipationAVenirRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadParticipationAVenirAsyncTask;
@@ -43,6 +44,8 @@ public class ParticipationAVenirFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private LoadParticipationAVenirAsyncTask mTask;
+    private Utilisateur utilisateur;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -69,7 +72,10 @@ public class ParticipationAVenirFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        mTask = new LoadParticipationAVenirAsyncTask(this);
+        Gson gson = new Gson();
+        utilisateur = gson.fromJson(getActivity().getIntent().getStringExtra("utilisateur"), Utilisateur.class);
+
+        mTask = new LoadParticipationAVenirAsyncTask(this, utilisateur);
         mTask.execute();
     }
 

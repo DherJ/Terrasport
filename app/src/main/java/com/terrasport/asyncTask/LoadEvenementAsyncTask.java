@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.terrasport.event.AllEvenementEvent;
 import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.model.Evenement;
+import com.terrasport.model.Utilisateur;
 import com.terrasport.utils.Globals;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -17,11 +18,14 @@ import java.util.List;
  */
 public class LoadEvenementAsyncTask extends AsyncTask <String, Void, List<Evenement>> {
 
-    private final String URI = Globals.getInstance().getBaseUrl() + "evenement/all-a-venir/utilisateur/3";
+    private final String URI = Globals.getInstance().getBaseUrl() + "evenement/all-a-venir/utilisateur/";
     private EvenementFragment fragment;
+    private Utilisateur utilisateur;
 
-    public LoadEvenementAsyncTask(EvenementFragment fragment) {
+
+    public LoadEvenementAsyncTask(EvenementFragment fragment, Utilisateur pUtilisateur) {
         this.fragment = fragment;
+        this.utilisateur = pUtilisateur;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class LoadEvenementAsyncTask extends AsyncTask <String, Void, List<Evenem
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        AllEvenementEvent allEvenementEvent = restTemplate.getForObject( URI, AllEvenementEvent.class);
+        AllEvenementEvent allEvenementEvent = restTemplate.getForObject( URI + this.utilisateur.getId(), AllEvenementEvent.class);
         return allEvenementEvent.getEvenements();
     }
 

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.terrasport.event.AllDemandeParticipationEvent;
 import com.terrasport.fragment.DemandeParticipationFragment;
 import com.terrasport.model.DemandeParticipation;
+import com.terrasport.model.Utilisateur;
 import com.terrasport.utils.Globals;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -17,11 +18,13 @@ import java.util.List;
  */
 public class LoadDemandeParticipationAsyncTask extends AsyncTask <String, Void, List<DemandeParticipation>> {
 
-    private final String URI = Globals.getInstance().getBaseUrl() + "demande-participation/all/utilisateur/3";
+    private final String URI = Globals.getInstance().getBaseUrl() + "demande-participation/all/utilisateur/";
     private DemandeParticipationFragment fragment;
+    private Utilisateur utilisateur;
 
-    public LoadDemandeParticipationAsyncTask(DemandeParticipationFragment fragment) {
+    public LoadDemandeParticipationAsyncTask(DemandeParticipationFragment fragment, Utilisateur pUtilisateur) {
         this.fragment = fragment;
+        this.utilisateur = pUtilisateur;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class LoadDemandeParticipationAsyncTask extends AsyncTask <String, Void, 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        AllDemandeParticipationEvent allParticipationEvent = restTemplate.getForObject( URI, AllDemandeParticipationEvent.class);
+        AllDemandeParticipationEvent allParticipationEvent = restTemplate.getForObject( URI + this.utilisateur.getId(), AllDemandeParticipationEvent.class);
         return allParticipationEvent.getDemandeParticipations();
     }
 

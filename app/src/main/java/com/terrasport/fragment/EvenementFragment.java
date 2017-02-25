@@ -71,8 +71,11 @@ public class EvenementFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        Gson gson = new Gson();
+        utilisateur = gson.fromJson(getActivity().getIntent().getStringExtra("utilisateur"), Utilisateur.class);
+
         this.evenements = new ArrayList<Evenement>();
-        mTask = new LoadEvenementAsyncTask(this);
+        mTask = new LoadEvenementAsyncTask(this, utilisateur);
         mTask.execute();
     }
 
@@ -87,9 +90,6 @@ public class EvenementFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-
-        Gson gson = new Gson();
-        utilisateur = gson.fromJson(getActivity().getIntent().getStringExtra("utilisateur"), Utilisateur.class);
 
         View view = inflater.inflate(R.layout.fragment_evenement_list, container, false);
         View myRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_evenement);

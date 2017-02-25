@@ -79,7 +79,7 @@ public class EvenementUtilisateurFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         this.evenements = new ArrayList<Evenement>();
-        mTask = new LoadEvenementUtilisateurAsyncTask(this);
+        mTask = new LoadEvenementUtilisateurAsyncTask(this, utilisateur);
         mTask.execute();
     }
 

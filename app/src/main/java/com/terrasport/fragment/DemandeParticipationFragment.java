@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.adapter.DemandeParticipationRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadDemandeParticipationAsyncTask;
@@ -38,6 +39,7 @@ public class DemandeParticipationFragment extends Fragment {
     private LoadDemandeParticipationAsyncTask mTask;
     private List<DemandeParticipation> demandesParticipation;
     public RecyclerView.Adapter adapter;
+    private Utilisateur utilisateur;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,11 +67,14 @@ public class DemandeParticipationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Gson gson = new Gson();
+        utilisateur = gson.fromJson(getActivity().getIntent().getStringExtra("utilisateur"), Utilisateur.class);
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         this.demandesParticipation = new ArrayList<DemandeParticipation>();
-        mTask = new LoadDemandeParticipationAsyncTask(this);
+        mTask = new LoadDemandeParticipationAsyncTask(this, utilisateur);
         mTask.execute();
     }
 
