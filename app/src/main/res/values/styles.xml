@@ -80,6 +80,13 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowBackground">@color/transparent_color</item>
     </style>
+
+    <style name="DialboxStyle">
+        <item name="android:colorBackground">@color/dialbox_background</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">200px</item>
+    </style>
+
     <style name="commonButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -87,4 +94,5 @@
         <item name="android:layout_margin">10dp</item>
     </style>
 
+    <color name="background_material_dark_2">#ffff</color>
 </resources>

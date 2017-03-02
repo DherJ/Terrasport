@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         private Dialog dialog;
 
+        public void replaceFragment(Fragment otherFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_menu, otherFragment).commit();
+        }
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             DrawerLayout drawerLayout;

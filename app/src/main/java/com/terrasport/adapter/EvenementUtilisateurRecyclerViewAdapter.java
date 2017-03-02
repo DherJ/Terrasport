@@ -3,7 +3,6 @@ package com.terrasport.adapter;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.terrasport.R;
+import com.terrasport.asyncTask.LoadDemandeParticipationEvenementAsyncTask;
 import com.terrasport.fragment.EvenementUtilisateurFragment;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;
@@ -33,12 +33,14 @@ public class EvenementUtilisateurRecyclerViewAdapter extends RecyclerView.Adapte
     private List<Evenement> mValues;
     private EvenementUtilisateurFragment.OnListFragmentInteractionListener mListener;
     private Context mContext;
+    private EvenementUtilisateurFragment mFragment;
     private Utilisateur mUtilisateur;
 
-    public EvenementUtilisateurRecyclerViewAdapter(List<Evenement> items, EvenementUtilisateurFragment.OnListFragmentInteractionListener listener, Context context, Utilisateur utilisateur) {
+    public EvenementUtilisateurRecyclerViewAdapter(List<Evenement> items, EvenementUtilisateurFragment.OnListFragmentInteractionListener listener, Context context, EvenementUtilisateurFragment fragment, Utilisateur utilisateur) {
         mValues = items;
         mListener = listener;
         mContext = context;
+        mFragment = fragment;
         mUtilisateur = utilisateur;
     }
 
@@ -107,9 +109,18 @@ public class EvenementUtilisateurRecyclerViewAdapter extends RecyclerView.Adapte
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
+                    Toast.makeText(mContext, "Test", Toast.LENGTH_SHORT);
+                    getListOfDemandesParticipationsEvenement(holder.mItem);
+
                 }
             }
         });
+    }
+
+    private void getListOfDemandesParticipationsEvenement(Evenement evenement) {
+        LoadDemandeParticipationEvenementAsyncTask mTask;
+        mTask = new LoadDemandeParticipationEvenementAsyncTask(mFragment, evenement);
+        mTask.execute();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.terrasport.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,11 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.terrasport.R;
+import com.terrasport.adapter.DemandeParticipationEvenementRecyclerViewAdapter;
 import com.terrasport.adapter.EvenementUtilisateurRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadEvenementUtilisateurAsyncTask;
+import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;
 import com.terrasport.utils.Globals;
@@ -43,6 +48,7 @@ public class EvenementUtilisateurFragment extends Fragment {
     private LoadEvenementUtilisateurAsyncTask mTask;
     private List<Evenement> evenements;
     public RecyclerView.Adapter adapter;
+    public RecyclerView.Adapter adapterDemandesEvenement;
     private FloatingActionButton addEvenementButton;
     private Utilisateur utilisateur;
 
@@ -68,6 +74,28 @@ public class EvenementUtilisateurFragment extends Fragment {
         return fragment;
     }
 
+    public void showListOfDemandesParticipationsEvenement(List<DemandeParticipation> result) {
+        Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT);
+        final Dialog dialog = new Dialog(getContext(), R.style.DialboxStyle);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.fragment_demande_participation_evenement_list);
+
+        result.add(result.get(0));
+        View myRecyclerView = (RecyclerView) dialog.findViewById(R.id.list_demande_evenement);
+
+        if (myRecyclerView instanceof RecyclerView) {
+
+            recyclerView = (RecyclerView) myRecyclerView;
+
+            adapterDemandesEvenement = new DemandeParticipationEvenementRecyclerViewAdapter(result, mListener, getContext());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapterDemandesEvenement);
+            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
+        }
+
+        dialog.show();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +119,7 @@ public class EvenementUtilisateurFragment extends Fragment {
         addEvenementButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         if (myRecyclerView instanceof RecyclerView) {
             Context context = view.getContext();
-            adapter = new EvenementUtilisateurRecyclerViewAdapter(this.evenements, mListener, getContext(), utilisateur);
+            adapter = new EvenementUtilisateurRecyclerViewAdapter(this.evenements, mListener, getContext(), this, utilisateur);
             recyclerView = (RecyclerView) myRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
@@ -120,7 +148,7 @@ public class EvenementUtilisateurFragment extends Fragment {
 
     public void updateListView(List<Evenement> result) {
         evenements = result;
-        adapter = new EvenementUtilisateurRecyclerViewAdapter(evenements, mListener, getContext(), utilisateur);
+        adapter = new EvenementUtilisateurRecyclerViewAdapter(evenements, mListener, getContext(), this, utilisateur);
         recyclerView.setAdapter(adapter);
     }
 
@@ -137,5 +165,7 @@ public class EvenementUtilisateurFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Evenement item);
+
+        void onListFragmentInteraction(DemandeParticipation item);
     }
 }

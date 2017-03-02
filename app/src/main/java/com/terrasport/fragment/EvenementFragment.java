@@ -16,7 +16,6 @@ import com.terrasport.adapter.EvenementRecyclerViewAdapter;
 import com.terrasport.asyncTask.LoadEvenementAsyncTask;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;
-import com.terrasport.utils.Globals;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
