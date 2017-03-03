@@ -9,6 +9,18 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.google.android.gms.maps.SupportMapFragment" />
+        class="com.google.android.gms.maps.SupportMapFragment" >
+
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:background="@color/cast_expanded_controller_ad_container_white_stripe_color"
+
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:paddingRight="10dp"/>
+
+    </fragment>
 
 </FrameLayout>

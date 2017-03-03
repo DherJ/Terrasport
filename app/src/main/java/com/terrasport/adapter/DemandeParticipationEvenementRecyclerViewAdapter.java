@@ -15,6 +15,12 @@ import com.terrasport.R;
 import com.terrasport.fragment.DemandeParticipationFragment;
 import com.terrasport.fragment.EvenementUtilisateurFragment;
 import com.terrasport.model.DemandeParticipation;
+import com.terrasport.model.Etat;
+import com.terrasport.utils.Globals;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,6 +33,8 @@ import java.util.Locale;
  * TODO: Replace the implementation with code for your data type.
  */
 public class DemandeParticipationEvenementRecyclerViewAdapter extends RecyclerView.Adapter<DemandeParticipationEvenementRecyclerViewAdapter.ViewHolder> {
+
+    private final String URI_UPDATE_ETAT_DEMANDE = Globals.getInstance().getBaseUrl() + "demande-participation/miseAjourEtatDemande/";
 
     private final List<DemandeParticipation> mValues;
     private final EvenementUtilisateurFragment.OnListFragmentInteractionListener mListener;
@@ -46,7 +54,7 @@ public class DemandeParticipationEvenementRecyclerViewAdapter extends RecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(mContext, Locale.getDefault());
@@ -79,14 +87,28 @@ public class DemandeParticipationEvenementRecyclerViewAdapter extends RecyclerVi
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "accept", Toast.LENGTH_SHORT).show();
+                Etat etat = new Etat();
+                etat.setId(2);
+                etat.setLibelle("Validée");
+                holder.mItem.setEtat(etat);
+                updateEtatDemandeParticipation(holder.mItem);
+                Toast.makeText(mContext, "Demande validée", Toast.LENGTH_SHORT).show();
+                mValues.remove(holder.mItem);
+                notifyItemRemoved(position);
             }
         });
 
         holder.declineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "decline", Toast.LENGTH_SHORT).show();
+                Etat etat = new Etat();
+                etat.setId(3);
+                etat.setLibelle("Refusée");
+                holder.mItem.setEtat(etat);
+                updateEtatDemandeParticipation(holder.mItem);
+                Toast.makeText(mContext, "Demande refusée", Toast.LENGTH_SHORT).show();
+                mValues.remove(holder.mItem);
+                notifyItemRemoved(position);
             }
         });
 
@@ -100,6 +122,12 @@ public class DemandeParticipationEvenementRecyclerViewAdapter extends RecyclerVi
                 }
             }
         });
+    }
+
+    public void updateEtatDemandeParticipation(DemandeParticipation demandeParticipation) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        restTemplate.postForEntity(URI_UPDATE_ETAT_DEMANDE, demandeParticipation, ResponseEntity.class);
     }
 
     @Override

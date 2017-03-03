@@ -47,6 +47,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -382,7 +383,14 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
         if(location != null) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+           mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+            /*
+            mGoogleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getContext(), R.raw.map_style_night));
+            */
+
             mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("Ma position").snippet("Je me trouve ici!")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_user)));
 

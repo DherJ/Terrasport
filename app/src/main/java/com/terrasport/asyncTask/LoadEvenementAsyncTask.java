@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class LoadEvenementAsyncTask extends AsyncTask <String, Void, List<Evenement>> {
 
-    private final String URI = Globals.getInstance().getBaseUrl() + "evenement/all-a-venir/utilisateur/";
+    private final String URI = Globals.getInstance().getBaseUrl() + "evenement/all-a-venir";
     private EvenementFragment fragment;
     private Utilisateur utilisateur;
 

@@ -80,7 +80,6 @@ public class EvenementUtilisateurFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fragment_demande_participation_evenement_list);
 
-        result.add(result.get(0));
         View myRecyclerView = (RecyclerView) dialog.findViewById(R.id.list_demande_evenement);
 
         if (myRecyclerView instanceof RecyclerView) {
