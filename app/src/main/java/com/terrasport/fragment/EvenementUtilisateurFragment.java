@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -75,13 +77,23 @@ public class EvenementUtilisateurFragment extends Fragment {
     }
 
     public void showListOfDemandesParticipationsEvenement(List<DemandeParticipation> result) {
-        Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT);
-        final Dialog dialog = new Dialog(getContext(), R.style.DialboxStyle);
+        final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.fragment_demande_participation_evenement_list);
+        dialog.setContentView(R.layout.view_dialbox_demande_participation_evenement_list);
 
         View myRecyclerView = (RecyclerView) dialog.findViewById(R.id.list_demande_evenement);
+        Button buttonClose = (Button) dialog.findViewById(R.id.btn_close);
+        buttonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
+        if(result.size() == 0) {
+            TextView textViewNoConent = (TextView) dialog.findViewById(R.id.text_no_content);
+            textViewNoConent.setVisibility(View.VISIBLE);
+        }
         if (myRecyclerView instanceof RecyclerView) {
 
             recyclerView = (RecyclerView) myRecyclerView;
@@ -116,6 +128,12 @@ public class EvenementUtilisateurFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_evenement_utilisateur_list, container, false);
         View myRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_evenement_utilisateur);
         addEvenementButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        addEvenementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
         if (myRecyclerView instanceof RecyclerView) {
             Context context = view.getContext();
             adapter = new EvenementUtilisateurRecyclerViewAdapter(this.evenements, mListener, getContext(), this, utilisateur);

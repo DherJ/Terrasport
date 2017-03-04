@@ -46,7 +46,7 @@
         <item name="android:colorForeground">@color/grey</item>
     </style>
 
-    <style name="AppTheme.TitleDialBox" parent="@android:style/Theme.Dialog">
+    <style name="AppTheme.TitleDialBox" >
         <item name="android:textAppearance">@android:style/TextAppearance.DialogWindowTitle</item>
         <item name="android:maxLines">1</item>
         <item name="android:scrollHorizontally">true</item>
@@ -84,7 +84,7 @@
     <style name="DialboxStyle">
         <item name="android:colorBackground">@color/dialbox_background</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">200px</item>
+        <item name="android:layout_height">100px</item>
     </style>
 
     <style name="commonButtonStyle">

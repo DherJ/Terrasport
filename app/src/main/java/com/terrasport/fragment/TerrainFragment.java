@@ -25,6 +25,9 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -39,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,6 +65,7 @@ import com.terrasport.model.Sport;
 import com.terrasport.model.Terrain;
 import com.terrasport.model.Utilisateur;
 import com.terrasport.utils.Globals;
+import com.terrasport.view.MapSearchView;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -73,8 +78,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -128,6 +135,9 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
     private HashMap<Marker, Terrain> mMarkersHashMap;
 
+    private MapSearchView searchView;
+    public Button searchButton;
+
     public TerrainFragment() {
         // Required empty public constructor
     }
@@ -165,14 +175,28 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
         Gson gson = new Gson();
         utilisateur = gson.fromJson(this.getArguments().getString("utilisateur"), Utilisateur.class);
-
+        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_terrain, container, false);
+        View v = inflater.inflate(R.layout.fragment_terrain, container, false);
+
+        searchButton = (Button) v.findViewById(R.id.button_search);
+
+        searchView = (MapSearchView) v.findViewById(R.id.view_search);
+        searchView.setIsVisible(false);
+        searchView.setSports(this.sports);
+        //searchView.setSearchButton(searchButton);
+        searchView.setTerrainFragment(this);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                searchView.setVisible(searchView.isVisible());
+            }
+        });
+        return v;
     }
 
     @Override
@@ -282,6 +306,8 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
     public void updateListSport(List<Sport> result) {
         this.sports = result;
+        searchView.setSports(result);
+        searchView.draw();
     }
 
     public void updateListNiveaux(List<Niveau> result) {
@@ -386,6 +412,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
             /*
+            // pour mettre le stle de nuit
             mGoogleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             getContext(), R.raw.map_style_night));
@@ -396,6 +423,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
             mGoogleMap.setMyLocationEnabled(true);
 
+            // déplacement de la caméra sur notre position
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
             // Zoom in the Google Map
@@ -631,6 +659,23 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         dialog.show();
     }
 
+    public void filtreMarkers(Sport sportSelected) {
+        /*
+        for(int i = 0; i < this.mMarkersHashMap.size(); i++) {
+            if(this.mMarkersHashMap.get(i).getSport().getId().equals(sportSelected.getId())) {
+                this.mMarkersHashMap.get(this.mMarkersHashMap.get(i)).
+            }
+        }
+        */
+        Set<Marker> keys = this.mMarkersHashMap.keySet();
+        Iterator<Marker> iterator = keys.iterator();
+        while(iterator.hasNext()){
+            Marker x = iterator.next();
+            if(this.mMarkersHashMap.get(x) != null)
+                System.out.println("key is " + x.toString());
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -707,5 +752,21 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
         }
         return drawable;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu, menu);
+        //menu.removeItem(R.id.action_add);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

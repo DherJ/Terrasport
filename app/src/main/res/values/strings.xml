@@ -63,4 +63,7 @@
     <string name="text_dialbox_confirmation_envoie_demande">Etes vous sure de vouloir envoyer une demande de participation à cet évènement ?</string>
     <string name="titre_dialbox_erreur_internet">Connection</string>
     <string name="text_dialbox_erreur_internet">Vous n\'êtes pas connecté à internet veuillez réessayer ultérieurement</string>
+    <string name="titre_demandes_en_cours">Demandes en cours</string>
+    <string name="close">Fermer</string>
+    <string name="no_content">Aucune données à afficher</string>
 </resources>

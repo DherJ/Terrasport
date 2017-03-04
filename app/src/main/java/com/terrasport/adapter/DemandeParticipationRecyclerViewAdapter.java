@@ -40,7 +40,7 @@ public class DemandeParticipationRecyclerViewAdapter extends RecyclerView.Adapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_demande_participation, parent, false);
+                .inflate(R.layout.view_demande_participation_item, parent, false);
         return new ViewHolder(view);
     }
 

@@ -20,12 +20,9 @@ public class LoadEvenementAsyncTask extends AsyncTask <String, Void, List<Evenem
 
     private final String URI = Globals.getInstance().getBaseUrl() + "evenement/all-a-venir";
     private EvenementFragment fragment;
-    private Utilisateur utilisateur;
-
 
     public LoadEvenementAsyncTask(EvenementFragment fragment, Utilisateur pUtilisateur) {
         this.fragment = fragment;
-        this.utilisateur = pUtilisateur;
     }
 
     @Override
@@ -34,7 +31,7 @@ public class LoadEvenementAsyncTask extends AsyncTask <String, Void, List<Evenem
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        AllEvenementEvent allEvenementEvent = restTemplate.getForObject( URI + this.utilisateur.getId(), AllEvenementEvent.class);
+        AllEvenementEvent allEvenementEvent = restTemplate.getForObject( URI, AllEvenementEvent.class);
         return allEvenementEvent.getEvenements();
     }
 
