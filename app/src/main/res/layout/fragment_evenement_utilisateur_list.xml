@@ -19,6 +19,7 @@
         tools:context="com.terrasport.fragment.EvenementUtilisateurFragment"
         tools:listitem="@layout/fragment_evenement_utilisateur" />
 
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
@@ -28,6 +29,7 @@
         app:fabSize="normal"
         android:src="@drawable/icone_add"
         app:layout_anchorGravity="bottom|right|end" />
+        -->
 
 
 

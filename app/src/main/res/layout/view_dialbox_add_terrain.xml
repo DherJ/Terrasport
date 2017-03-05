@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.MapView">
+    android:layout_height="wrap_content"
+    android:background="@color/background_material_dark_1">
 
     <LinearLayout
         android:orientation="vertical"
@@ -19,7 +18,10 @@
                 android:text="@string/titre_ajout_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.TitleDialBox" />
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textAppearance="@android:style/TextAppearance.DialogWindowTitle" />
 
         </LinearLayout>
 
@@ -53,8 +55,8 @@
                 android:id="@+id/text_adresse_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1.5" />
+                android:layout_weight="1.5"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -81,8 +83,8 @@
                 android:text="@string/type_de_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white"/>
 
             <Spinner
                 android:id="@+id/select_sport"
@@ -103,7 +105,7 @@
                 android:text="@string/nom_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
+                android:textColor="@color/white"
                 android:layout_weight="1" />
 
             <EditText
@@ -111,9 +113,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:theme="@style/AppTheme.MapView"
                 android:layout_weight="1"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -126,7 +128,7 @@
             <TextView
                 android:text="@string/terrain_public"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
+                android:textColor="@color/white"
                 android:layout_weight="1"
                 android:layout_width="wrap_content" />
 

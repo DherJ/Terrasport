@@ -42,7 +42,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,7 +50,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -258,10 +256,10 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 drawable = R.drawable.map_marker_foot;
                 break;
             case 2:
-                drawable = R.drawable.map_marker_basket;
+                drawable = R.drawable.map_marker_rugby;
                 break;
             case 3:
-                drawable = R.drawable.map_marker_rugby;
+                drawable = R.drawable.map_marker_basket;
                 break;
             case 4:
                 drawable = R.drawable.map_marker_handball;
@@ -274,6 +272,9 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
             case 7:
                 drawable = R.drawable.map_marker_tennis;
+                break;
+            case 8:
+                drawable = R.drawable.map_marker_volleyball;
                 break;
         }
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, terrain.getIsPublic()));
@@ -315,14 +316,8 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
     private Bitmap getMarkerBitmapFromView(@DrawableRes int resId, boolean isPublic) {
-        View customMarkerView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker_public, null);
+        View customMarkerView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
         ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.marker_image);
-        ImageView markerPublicImageView = (ImageView) customMarkerView.findViewById(R.id.public_image);
-        if(Boolean.TRUE.equals(isPublic)) {
-            markerPublicImageView.setImageResource(R.drawable.image_terrain_public);
-        } else {
-            markerPublicImageView.setImageResource(R.drawable.image_terrain_prive);
-        }
         markerImageView.setImageResource(resId);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
@@ -352,10 +347,10 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                         drawable = R.drawable.map_marker_foot;
                         break;
                     case 2:
-                        drawable = R.drawable.map_marker_basket;
+                        drawable = R.drawable.map_marker_rugby;
                         break;
                     case 3:
-                        drawable = R.drawable.map_marker_rugby;
+                        drawable = R.drawable.map_marker_basket;
                         break;
                     case 4:
                         drawable = R.drawable.map_marker_handball;
@@ -368,6 +363,9 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                         break;
                     case 7:
                         drawable = R.drawable.map_marker_tennis;
+                        break;
+                    case 8:
+                        drawable = R.drawable.map_marker_volleyball;
                         break;
                 }
                 bitmap = BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(drawable, this.terrains.get(i).getIsPublic()));
@@ -489,7 +487,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) view).setTextColor(Color.BLACK);
+                    ((TextView) view).setTextColor(Color.WHITE);
                     niveauCible = niveaux.get(position);
                 }
                 @Override
@@ -628,7 +626,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) view).setTextColor(Color.BLACK);
+                ((TextView) view).setTextColor(Color.WHITE);
                 sportSelected = sports.get(position);
             }
             @Override
@@ -650,8 +648,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
             @Override
             public void onClick(View v) {
                 // Close dialog
-                //fragmentManager.beginTransaction().remove(f).commit();
-                //finish();
                 addTerrain(latLng);
                 dialog.dismiss();
             }
@@ -660,13 +656,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
     public void filtreMarkers(Sport sportSelected) {
-        /*
-        for(int i = 0; i < this.mMarkersHashMap.size(); i++) {
-            if(this.mMarkersHashMap.get(i).getSport().getId().equals(sportSelected.getId())) {
-                this.mMarkersHashMap.get(this.mMarkersHashMap.get(i)).
-            }
-        }
-        */
+        // TODO a implémenter
         Set<Marker> keys = this.mMarkersHashMap.keySet();
         Iterator<Marker> iterator = keys.iterator();
         while(iterator.hasNext()){
@@ -733,10 +723,10 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 drawable = R.drawable.map_marker_foot;
                 break;
             case 2:
-                drawable = R.drawable.map_marker_basket;
+                drawable = R.drawable.map_marker_rugby;
                 break;
             case 3:
-                drawable = R.drawable.map_marker_rugby;
+                drawable = R.drawable.map_marker_basket;
                 break;
             case 4:
                 drawable = R.drawable.map_marker_handball;
@@ -749,6 +739,9 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
             case 7:
                 drawable = R.drawable.map_marker_tennis;
+                break;
+            case 8:
+                drawable = R.drawable.map_marker_volleyball;
                 break;
         }
         return drawable;

@@ -91,6 +91,9 @@ public class MapSearchView extends LinearLayout  {
                             case 7:
                                 terrainFragment.searchButton.setBackgroundResource(R.drawable.map_marker_tennis);
                                 break;
+                            case 8:
+                                terrainFragment.searchButton.setBackgroundResource(R.drawable.map_marker_volleyball);
+                                break;
                         }
                         setIsVisible(!isVisible);
                         setVisibility(View.GONE);

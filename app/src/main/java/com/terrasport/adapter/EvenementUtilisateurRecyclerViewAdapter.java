@@ -87,18 +87,30 @@ public class EvenementUtilisateurRecyclerViewAdapter extends RecyclerView.Adapte
         holder.progressBarParticipants.setMax(mValues.get(position).getNbPlaces());
         holder.progressBarParticipants.setProgress(mValues.get(position).getNbParticipants());
 
-        switch(mValues.get(position).getTerrain().getSport().getId()) {
+        switch(mValues.get(position).getSport().getId()) {
             case 1:
                 holder.imageSport.setImageResource(R.drawable.map_marker_foot);
                 break;
             case 2:
-                holder.imageSport.setImageResource(R.drawable.map_marker_basket);
-                break;
-            case 3:
                 holder.imageSport.setImageResource(R.drawable.map_marker_rugby);
                 break;
+            case 3:
+                holder.imageSport.setImageResource(R.drawable.map_marker_basket);
+                break;
             case 4:
-                holder.imageSport.setImageResource(R.drawable.map_marker_foot);
+                holder.imageSport.setImageResource(R.drawable.map_marker_handball);
+                break;
+            case 5:
+                holder.imageSport.setImageResource(R.drawable.map_marker_golf);
+                break;
+            case 6:
+                holder.imageSport.setImageResource(R.drawable.map_marker_baseball);
+                break;
+            case 7:
+                holder.imageSport.setImageResource(R.drawable.map_marker_tennis);
+                break;
+            case 8:
+                holder.imageSport.setImageResource(R.drawable.map_marker_volleyball);
                 break;
         }
 
@@ -109,7 +121,6 @@ public class EvenementUtilisateurRecyclerViewAdapter extends RecyclerView.Adapte
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-                    Toast.makeText(mContext, "Test", Toast.LENGTH_SHORT);
                     getListOfDemandesParticipationsEvenement(holder.mItem);
 
                 }

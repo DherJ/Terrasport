@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/AppTheme.MapView">
+        android:background="@color/background_material_dark_1">
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,7 +18,10 @@
                 android:text="@string/titre_ajout_evenement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.TitleDialBox" />
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textAppearance="@android:style/TextAppearance.DialogWindowTitle" />
 
         </LinearLayout>
 
@@ -44,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/calendarView"
                 android:layout_weight="1"
-                android:theme="@style/AppTheme.MapView" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -71,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:theme="@style/AppTheme.MapView" />
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -98,8 +101,8 @@
                 android:text="@string/niveau_cible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1.5" />
+                android:layout_weight="1.5"
+                android:textColor="@color/white"/>
 
             <Spinner
                 android:id="@+id/select_niveau"
@@ -119,15 +122,15 @@
                 android:text="@string/nombre_de_places_disponibles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
-                android:layout_weight="1.5" />
+                android:layout_weight="1.5"
+                android:textColor="@color/white"/>
 
             <EditText
                 android:id="@+id/edit_nb_places_disponibles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:theme="@style/AppTheme.MapView"
+                android:textColor="@color/white"
                 android:layout_weight="0.5"
                 android:layout_gravity="end"/>
 
@@ -143,7 +146,7 @@
                 android:text="@string/nombre_de_places_restantes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.MapView"
+                android:textColor="@color/white"
                 android:layout_weight="1.5" />
 
             <EditText
@@ -151,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:theme="@style/AppTheme.MapView"
+                android:textColor="@color/white"
                 android:layout_weight="0.5"
                 android:layout_gravity="end"/>
 

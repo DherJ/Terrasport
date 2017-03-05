@@ -28,13 +28,14 @@
         <item name="android:textColorHint">@color/dark</item>
     </style>
 
-    <style name="AppTheme.Spinner" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
-        <item name="android:textColor">@color/dark</item>
-        <item name="android:textColorPrimary">@color/cast_expanded_controller_text_color</item>
-        <item name="android:textColorSecondary">@color/dark</item>
-        <item name="android:textColorTertiary">@color/cast_expanded_controller_text_color</item>
-        <item name="android:textColorLink">@color/cast_expanded_controller_text_color</item>
-        <item name="android:textColorHint">@color/cast_expanded_controller_text_color</item>
+    <style name="AppTheme.Spinner">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorTertiary">@color/white</item>
+        <item name="android:textColorLink">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="colorPrimaryDark">@color/primary_material_dark</item>
     </style>
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">

@@ -1,6 +1,5 @@
 package com.terrasport.adapter;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.location.Address;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.model.DemandeParticipation;
@@ -101,18 +99,30 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
         holder.progressBarParticipants.setMax(mValues.get(position).getNbPlaces());
         holder.progressBarParticipants.setProgress(mValues.get(position).getNbParticipants());
 
-        switch(mValues.get(position).getTerrain().getSport().getId()) {
+        switch(mValues.get(position).getSport().getId()) {
             case 1:
                 holder.imageSport.setImageResource(R.drawable.map_marker_foot);
                 break;
             case 2:
-                holder.imageSport.setImageResource(R.drawable.map_marker_basket);
-                break;
-            case 3:
                 holder.imageSport.setImageResource(R.drawable.map_marker_rugby);
                 break;
+            case 3:
+                holder.imageSport.setImageResource(R.drawable.map_marker_basket);
+                break;
             case 4:
-                holder.imageSport.setImageResource(R.drawable.map_marker_foot);
+                holder.imageSport.setImageResource(R.drawable.map_marker_handball);
+                break;
+            case 5:
+                holder.imageSport.setImageResource(R.drawable.map_marker_golf);
+                break;
+            case 6:
+                holder.imageSport.setImageResource(R.drawable.map_marker_baseball);
+                break;
+            case 7:
+                holder.imageSport.setImageResource(R.drawable.map_marker_tennis);
+                break;
+            case 8:
+                holder.imageSport.setImageResource(R.drawable.map_marker_volleyball);
                 break;
         }
 

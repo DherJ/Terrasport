@@ -127,6 +127,7 @@ public class EvenementUtilisateurFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_evenement_utilisateur_list, container, false);
         View myRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_evenement_utilisateur);
+        /*
         addEvenementButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         addEvenementButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +135,7 @@ public class EvenementUtilisateurFragment extends Fragment {
                 
             }
         });
+        */
         if (myRecyclerView instanceof RecyclerView) {
             Context context = view.getContext();
             adapter = new EvenementUtilisateurRecyclerViewAdapter(this.evenements, mListener, getContext(), this, utilisateur);

@@ -5,11 +5,11 @@ Application Android qui permet de répertorier les terrains sportifs, d'en ajout
 ## Fonctionnalités de l'application
 
 - Connexion
-- Création d'un compte
-- Visualiser ses évèements, créer un évènement
+- Création d'un compte utilisateur
+- Visualiser ses évènements, créer un évènement
 - Demander à participer à un évènement sportif
-- Refuser / Valider la demande de participation d'un utilisateur à son évènement
-- Visualiser l'ensemble des terrains sur la google map avec possibilité d'ajouter un terrain
+- Refuser / Valider la demande de participation d'un utilisateur à un de ses évènements
+- Visualiser l'ensemble des terrains sur la google map avec possibilité d'ajouter un terrain ou un évènement sur un terrain
 
 
 ## Screenshots de l'application
@@ -41,7 +41,9 @@ Application Android qui permet de répertorier les terrains sportifs, d'en ajout
 
 ![Screenshot](./screens/map.png)
 
-### Visualiser le détail d'un terrain
+![Screenshot](./screens/map_filtre.png)
+
+### Visualiser le détail des informations sur un terrain
 
 ![Screenshot](./screens/map_click_marker.png)
 
