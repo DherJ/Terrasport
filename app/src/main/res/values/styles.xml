@@ -95,5 +95,4 @@
         <item name="android:layout_margin">10dp</item>
     </style>
 
-    <color name="background_material_dark_2">#ffff</color>
 </resources>

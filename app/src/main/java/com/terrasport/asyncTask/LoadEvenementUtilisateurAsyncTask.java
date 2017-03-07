@@ -3,7 +3,6 @@ package com.terrasport.asyncTask;
 import android.os.AsyncTask;
 
 import com.terrasport.event.AllEvenementEvent;
-import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.fragment.EvenementUtilisateurFragment;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;

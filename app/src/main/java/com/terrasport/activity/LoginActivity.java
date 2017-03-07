@@ -32,9 +32,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.gson.Gson;
 import com.terrasport.R;
 import com.terrasport.model.Utilisateur;
@@ -43,7 +41,6 @@ import com.terrasport.utils.Globals;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

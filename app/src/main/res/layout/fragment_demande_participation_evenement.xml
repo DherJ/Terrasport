@@ -53,7 +53,7 @@
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="70px"
                 android:layout_height="70px"
-                android:layout_marginLeft="40px"
+                android:layout_marginLeft="20px"
                 android:id="@+id/decline_demande_button"
                 android:background="@drawable/ic_refusee" />
 

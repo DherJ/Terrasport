@@ -3,10 +3,8 @@ package com.terrasport.asyncTask;
 import android.os.AsyncTask;
 
 import com.terrasport.event.AllNiveauEvent;
-import com.terrasport.event.AllSportEvent;
 import com.terrasport.fragment.TerrainFragment;
 import com.terrasport.model.Niveau;
-import com.terrasport.model.Sport;
 import com.terrasport.utils.Globals;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

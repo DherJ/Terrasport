@@ -1,6 +1,5 @@
 package com.terrasport.event;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.terrasport.model.Participation;
 
 import java.io.Serializable;

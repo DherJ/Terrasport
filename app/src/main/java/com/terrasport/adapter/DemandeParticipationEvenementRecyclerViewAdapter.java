@@ -82,7 +82,7 @@ public class DemandeParticipationEvenementRecyclerViewAdapter extends RecyclerVi
         holder.mItem = mValues.get(position);
 
         holder.textViewDateEvenement.setText(formater.format(mValues.get(position).getDateDemande()));
-        holder.textViewUtilisateur.setText("Crée par " + mValues.get(position).getUtilisateur().getNom());
+        holder.textViewUtilisateur.setText("Demandeur : " + mValues.get(position).getUtilisateur().getNom());
 
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +143,6 @@ public class DemandeParticipationEvenementRecyclerViewAdapter extends RecyclerVi
         public final TextView textViewAdresseEvenement;
         public final Button acceptButton;
         public final Button declineButton;
-
 
         public DemandeParticipation mItem;
 

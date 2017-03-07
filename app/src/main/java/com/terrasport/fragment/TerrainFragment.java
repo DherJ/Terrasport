@@ -25,9 +25,6 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -113,7 +110,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     private boolean isTerrainPublic;
     private Sport sportSelected;
 
-
     private OnFragmentInteractionListener mListener;
 
     private LoadTerrainAsyncTask mTerrainTask;
@@ -151,7 +147,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         TerrainFragment fragment = new TerrainFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -183,7 +178,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         View v = inflater.inflate(R.layout.fragment_terrain, container, false);
 
         searchButton = (Button) v.findViewById(R.id.button_search);
-
         searchView = (MapSearchView) v.findViewById(R.id.view_search);
         searchView.setIsVisible(false);
         searchView.setSports(this.sports);
@@ -408,28 +402,21 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         if(location != null) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
             /*
             // pour mettre le stle de nuit
             mGoogleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             getContext(), R.raw.map_style_night));
             */
-
             mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("Ma position").snippet("Je me trouve ici!")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_user)));
-
             mGoogleMap.setMyLocationEnabled(true);
-
             // déplacement de la caméra sur notre position
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
             // Zoom in the Google Map
             mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         }
-
         setTerrainsMarkers();
-
     }
 
     @Override
@@ -440,8 +427,8 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     @Override
     public void onInfoWindowClick(Marker marker) {
         terrain = mMarkersHashMap.get(marker);
-        if(terrain != null && Boolean.FALSE.equals(terrain.getIsOccupe())) {
-            // on affiche le formulaire our créer un éveènement
+        if(terrain != null)  {
+            // on affiche le formulaire our créer un évènement
 
             final Dialog dialog = new Dialog(getContext());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -527,9 +514,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Close dialog
-                    //fragmentManager.beginTransaction().remove(f).commit();
-                    //finish();
                     addEvenement();
                     dialog.dismiss();
                 }
@@ -540,12 +524,10 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
     }
 
     @Override
@@ -647,7 +629,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Close dialog
                 addTerrain(latLng);
                 dialog.dismiss();
             }
@@ -745,21 +726,5 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
         }
         return drawable;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu, menu);
-        //menu.removeItem(R.id.action_add);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

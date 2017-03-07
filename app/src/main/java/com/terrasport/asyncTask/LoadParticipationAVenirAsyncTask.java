@@ -2,11 +2,8 @@ package com.terrasport.asyncTask;
 
 import android.os.AsyncTask;
 
-import com.terrasport.event.AllEvenementEvent;
 import com.terrasport.event.AllParticipationEvent;
-import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.fragment.ParticipationAVenirFragment;
-import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
 import com.terrasport.model.Utilisateur;
 import com.terrasport.utils.Globals;
