@@ -126,6 +126,10 @@ public class EvenementRecyclerViewAdapter extends RecyclerView.Adapter<Evenement
                 break;
         }
 
+        if( mValues.get(position).getNbPlacesRestantes() == 0) {
+            holder.buttonEnvoyerDemandeParticipation.setVisibility(View.INVISIBLE);
+        }
+
         holder.buttonEnvoyerDemandeParticipation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

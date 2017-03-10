@@ -181,7 +181,6 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         searchView = (MapSearchView) v.findViewById(R.id.view_search);
         searchView.setIsVisible(false);
         searchView.setSports(this.sports);
-        //searchView.setSearchButton(searchButton);
         searchView.setTerrainFragment(this);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -428,7 +427,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
     public void onInfoWindowClick(Marker marker) {
         terrain = mMarkersHashMap.get(marker);
         if(terrain != null)  {
-            // on affiche le formulaire our créer un évènement
+            // on affiche le formulaire pour créer un évènement
 
             final Dialog dialog = new Dialog(getContext());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -598,7 +597,7 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
 
         Spinner spinner = (Spinner) dialog.findViewById(R.id.select_sport);
         List<String> listeSport = new ArrayList<>();
-        for(int i = 0; i < this.niveaux.size(); i++) {
+        for(int i = 0; i < this.sports.size(); i++) {
             listeSport.add(this.sports.get(i).getLibelle());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
@@ -643,7 +642,11 @@ public class TerrainFragment extends Fragment implements OnMapReadyCallback, Goo
         while(iterator.hasNext()){
             Marker x = iterator.next();
             if(this.mMarkersHashMap.get(x) != null)
-                System.out.println("key is " + x.toString());
+                if( sportSelected == null || this.mMarkersHashMap.get(x).getSport().getId().equals(sportSelected.getId())) {
+                    x.setVisible(true);
+                } else {
+                    x.setVisible(false);
+                }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.terrasport.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class Utilisateur {
@@ -13,7 +12,8 @@ public class Utilisateur {
 	private String login;
 	private String password;
 	private String sexe;
-	
+	private Boolean isSignale;
+
 	private List<CompetenceSport> competencesSport;
 
 	public Integer getId() {
@@ -69,5 +69,11 @@ public class Utilisateur {
 	}
 	public void setCompetencesSport(List<CompetenceSport> competencesSport) {
 		this.competencesSport = competencesSport;
+	}
+	public Boolean getIsSignale() {
+		return isSignale;
+	}
+	public void setIsSignale(Boolean signale) {
+		isSignale = signale;
 	}
 }

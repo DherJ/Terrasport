@@ -4,19 +4,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.terrasport.R;
-import com.terrasport.adapter.ParticipationAVenirRecyclerViewAdapter;
-import com.terrasport.asyncTask.LoadParticipationAVenirAsyncTask;
-import com.terrasport.event.AllParticipationEvent;
-import com.terrasport.model.Participation;
+import com.terrasport.adapter.UtilisateurRecyclerViewAdapter;
+import com.terrasport.asyncTask.LoadAllUtilisateurAsyncTask;
+import com.terrasport.model.DemandeParticipation;
+import com.terrasport.model.Evenement;
 import com.terrasport.model.Utilisateur;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -29,75 +27,65 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ParticipationAVenirFragment extends Fragment {
+public class UtilisateurFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String ALL_PARTICIPATIONS_EVENT = "all-participations-event";
 
     // TODO: Customize parameters
-    private int mColumnCount = 0;
+    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private List<Participation> participations;
-    // private View view;
-    private RecyclerView.Adapter adapter;
-
     private RecyclerView recyclerView;
-    private LoadParticipationAVenirAsyncTask mTask;
-    private Utilisateur utilisateur;
+    private LoadAllUtilisateurAsyncTask mTask;
+    private List<Utilisateur> utilisateurs;
+    public RecyclerView.Adapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ParticipationAVenirFragment() {
+    public UtilisateurFragment() {
     }
 
-    public static ParticipationAVenirFragment newInstance(AllParticipationEvent allParticipationsEvent) {
-        ParticipationAVenirFragment fragment = new ParticipationAVenirFragment();
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static UtilisateurFragment newInstance(int columnCount) {
+        UtilisateurFragment fragment = new UtilisateurFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ALL_PARTICIPATIONS_EVENT, allParticipationsEvent);
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static ParticipationAVenirFragment newInstance(Utilisateur utilisateur) {
-        ParticipationAVenirFragment fragment = new ParticipationAVenirFragment();
+    public static UtilisateurFragment newInstance(Utilisateur utilisateur) {
+        UtilisateurFragment fragment = new UtilisateurFragment();
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate  (savedInstanceState);
+        super.onCreate(savedInstanceState);
+
+        utilisateurs = new ArrayList<>();
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        Gson gson = new Gson();
-        utilisateur = gson.fromJson(getActivity().getIntent().getStringExtra("utilisateur"), Utilisateur.class);
-
-        mTask = new LoadParticipationAVenirAsyncTask(this, utilisateur);
+        mTask = new LoadAllUtilisateurAsyncTask(this);
         mTask.execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_participation_a_venir_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
+        View view = inflater.inflate(R.layout.fragment_evenement_utilisateur_list, container, false);
+        View myRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_evenement_utilisateur);
+        if (myRecyclerView instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            if(participations == null) {
-                participations = new ArrayList<Participation>();
-            }
-
-            adapter = new ParticipationAVenirRecyclerViewAdapter(this.participations, mListener, getContext());
+            adapter = new UtilisateurRecyclerViewAdapter(this.utilisateurs, mListener, getContext());
+            recyclerView = (RecyclerView) myRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.WHITE).build());
         }
@@ -121,9 +109,9 @@ public class ParticipationAVenirFragment extends Fragment {
         mListener = null;
     }
 
-    public void updateListView(List<Participation> result) {
-        participations = result;
-        adapter = new ParticipationAVenirRecyclerViewAdapter(participations, mListener, getContext());
+    public void updateListView(List<Utilisateur> result) {
+        utilisateurs = result;
+        adapter = new UtilisateurRecyclerViewAdapter(utilisateurs, mListener, getContext());
         recyclerView.setAdapter(adapter);
     }
 
@@ -139,6 +127,7 @@ public class ParticipationAVenirFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Participation item);
+        void onListFragmentInteraction(Utilisateur item);
+
     }
 }

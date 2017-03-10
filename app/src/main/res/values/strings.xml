@@ -66,4 +66,6 @@
     <string name="titre_demandes_en_cours">Demandes en cours</string>
     <string name="close">Fermer</string>
     <string name="no_content">Aucune données à afficher</string>
+    <string name="signaler">Signaler</string>
+    <string name="deconnexion">Déconnexion</string>
 </resources>

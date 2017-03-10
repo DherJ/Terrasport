@@ -26,12 +26,13 @@ import com.terrasport.fragment.EvenementFragment;
 import com.terrasport.fragment.EvenementUtilisateurFragment;
 import com.terrasport.fragment.ParticipationAVenirFragment;
 import com.terrasport.fragment.TerrainFragment;
+import com.terrasport.fragment.UtilisateurFragment;
 import com.terrasport.model.DemandeParticipation;
 import com.terrasport.model.Evenement;
 import com.terrasport.model.Participation;
 import com.terrasport.model.Utilisateur;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener, DemandeParticipationFragment.OnListFragmentInteractionListener, EvenementUtilisateurFragment.OnListFragmentInteractionListener, TerrainFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParticipationAVenirFragment.OnListFragmentInteractionListener, EvenementFragment.OnListFragmentInteractionListener, DemandeParticipationFragment.OnListFragmentInteractionListener, EvenementUtilisateurFragment.OnListFragmentInteractionListener, TerrainFragment.OnFragmentInteractionListener, UtilisateurFragment.OnListFragmentInteractionListener {
 
         private Toolbar toolbar;
         private NavigationView navigationView;
@@ -159,8 +160,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     fragmentClass = DemandeParticipationFragment.class;
                 } else if (id == R.id.nav_map_terrains) {
                     fragmentClass = TerrainFragment.class;
+                } else if (id == R.id.nav_utilisateur) {
+                    fragmentClass = UtilisateurFragment.class;
                 }
-
 
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
@@ -205,6 +207,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Utilisateur item) {
 
     }
 

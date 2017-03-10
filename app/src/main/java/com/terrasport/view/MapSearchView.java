@@ -52,7 +52,7 @@ public class MapSearchView extends LinearLayout  {
         if(this.sports != null) {
             Spinner spinner = new Spinner(this.mContext);
             List<String> listeSports = new ArrayList<>();
-            listeSports.add("Aucun");
+            listeSports.add("All");
             for (int i = 0; i < this.sports.size(); i++) {
                 listeSports.add(this.sports.get(i).getLibelle());
             }
@@ -69,7 +69,7 @@ public class MapSearchView extends LinearLayout  {
                         terrainFragment.searchButton.setBackgroundResource(R.drawable.ic_action_search);
                     } else {
                         sportSelected = sports.get(position - 1);
-                        switch(sportSelected.getId()) {
+                        switch (sportSelected.getId()) {
                             case 1:
                                 terrainFragment.searchButton.setBackgroundResource(R.drawable.map_marker_foot);
                                 break;
@@ -95,10 +95,10 @@ public class MapSearchView extends LinearLayout  {
                                 terrainFragment.searchButton.setBackgroundResource(R.drawable.map_marker_volleyball);
                                 break;
                         }
-                        setIsVisible(!isVisible);
-                        setVisibility(View.GONE);
-                        terrainFragment.filtreMarkers(sportSelected);
                     }
+                    setIsVisible(!isVisible);
+                    setVisibility(View.GONE);
+                    terrainFragment.filtreMarkers(sportSelected);
                 }
 
                 @Override
